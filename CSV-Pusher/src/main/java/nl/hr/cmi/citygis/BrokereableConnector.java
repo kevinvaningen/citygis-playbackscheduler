@@ -9,7 +9,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 /**
  * Created by cmi on 09-11-15.
  */
-public class BrokerConnector {
+public class BrokereableConnector implements Brokereable {
     MqttClient mqttConnectedClient;
     String topic        = "";
     String content      = "";
@@ -17,17 +17,16 @@ public class BrokerConnector {
     String broker       = "tcp://localhost:1883";
     String clientId     = "CityGis csv pusher";
 
-    public BrokerConnector(){
-        System.out.println("Setting up "+BrokerConnector.class.getSimpleName()+ " using default configuration.");
+    public BrokereableConnector(){
+        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using default configuration.");
     }
 
-    public BrokerConnector(String brokerUrl, String clientId, int qos) {
+    public BrokereableConnector(String brokerUrl, String clientId, int qos) {
         //TODO pull up connection vars to ne object
         this.broker = brokerUrl;
         this.clientId = clientId;
         this.qos = qos;
     }
-
 
     public void connect(){
         MemoryPersistence persistence = new MemoryPersistence();
@@ -50,10 +49,28 @@ public class BrokerConnector {
     }
 
     public boolean isConnectedToServer(){
+        if(mqttConnectedClient==null){
+            return false;
+        }
         return mqttConnectedClient.isConnected();
     }
 
-    public boolean publishConnectAndTransfer(String message) {
+    public void disconnectFromBroker(){
+        try {
+        mqttConnectedClient.disconnect();
+        System.out.println("Disconnected");
+        } catch (MqttException me) {
+            System.out.println("reason " + me.getReasonCode());
+            System.out.println("msg " + me.getMessage());
+            System.out.println("loc " + me.getLocalizedMessage());
+            System.out.println("cause " + me.getCause());
+            System.out.println("excep " + me);
+            me.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean publish(String topic, String message) {
         if(isConnectedToServer()) {
             try {
                 System.out.println("Publishing message: " + message);
@@ -75,22 +92,8 @@ public class BrokerConnector {
         }
         else{
             connect();
-            publishConnectAndTransfer(message);
+            publish(topic,message);
         }
         return false;
-    }
-
-    public void disconnectFromBroker(){
-        try {
-        mqttConnectedClient.disconnect();
-        System.out.println("Disconnected");
-        } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
-            me.printStackTrace();
-        }
     }
 }

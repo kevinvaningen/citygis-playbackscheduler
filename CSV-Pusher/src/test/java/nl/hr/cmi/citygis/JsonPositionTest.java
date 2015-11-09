@@ -13,7 +13,7 @@ import java.util.Calendar;
 /**
  * Unit test for simple App.
  */
-public class JsonTest extends TestCase {
+public class JsonPositionTest extends TestCase {
 
     Calendar c;
     Gson jsonConverter;
@@ -22,7 +22,7 @@ public class JsonTest extends TestCase {
      *
      * @param testName name of the test case
      */
-    public JsonTest(String testName) {
+    public JsonPositionTest(String testName) {
         super( testName );
     }
 
@@ -30,7 +30,7 @@ public class JsonTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite( JsonTest.class );
+        return new TestSuite( JsonPositionTest.class );
     }
 
     public void setUp() throws Exception {

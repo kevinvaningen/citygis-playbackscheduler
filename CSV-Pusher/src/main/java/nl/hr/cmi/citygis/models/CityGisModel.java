@@ -1,13 +1,24 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.models;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.function.Function;
 
-public class CityGisModel {
+public abstract class CityGisModel {
     private LocalDateTime dateTime;
     private Long unitId;
-    private String data;
+
+    public CityGisModel create(LocalDateTime dateTime, Long unitId) {
+        this.dateTime = dateTime;
+        this.unitId = unitId;
+        return this;
+    }
+
+    public CityGisModel create(String dateTime, String unitId) {
+        this.setDateTime(dateTime);
+        this.setUnitId(unitId);
+        return this;
+    }
 
     public LocalDateTime getDateTime() {
         return dateTime;
@@ -34,25 +45,12 @@ public class CityGisModel {
         this.unitId = Long.parseLong(unitId);
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public void setData(List<String> data) {
-        this.data = String.join(" ; ", data);
-    }
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CityGisModel{");
+        final StringBuilder sb = new StringBuilder("");
         sb.append("dateTime=").append(dateTime);
         sb.append(", unitId=").append(unitId);
-        sb.append(", data='").append(data).append('\'');
-        sb.append('}');
+        sb.append(' ');
         return sb.toString();
     }
 }

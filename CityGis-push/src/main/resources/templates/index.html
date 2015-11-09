@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"/>
+
+</head>
+
+<body ng-app="citygisApp">
+<h1>Welkom to CityGis Push Application!</h1>
+
+<div ng-controller="formController">
+    <form>
+        Username: <input type="text" ng-model="user.username"/> <br/>
+        First name: <input type="text" ng-model="user.firstName"/> <br/>
+        Last name: <input type="text" ng-model="user.lastName"/> <br/>
+        E-mail: <input type="text" ng-model="user.email"/> <br/> <br/>
+
+        <input type="submit" ng-click="submitUser()"/>
+        <input type="reset" ng-click="reset()"/>
+
+    </form>
+</div>
+<script type="text/javascript" src="js/app.js"></script>
+
+</body>
+</html>

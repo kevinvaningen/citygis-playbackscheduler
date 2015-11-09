@@ -1,12 +1,14 @@
 package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.models.CityGisModel;
+import nl.hr.cmi.citygis.models.CityGisData;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Created by cmi on 09-11-15.
@@ -22,20 +24,55 @@ public class MessagePlaybackScheduler {
     public  MessagePlaybackScheduler(){
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Created scheduler using System time now:" + start.toString());
-
     }
+
     public  MessagePlaybackScheduler(LocalDateTime time){
         schedulerTime = time;
         System.out.println("Created scheduler using inputted time:" + schedulerTime.toString());
     }
 
-    public void startPlayback(LinkedHashMap<LocalDateTime, List<CityGisModel>> data,Brokereable messageBroker){
+    public void startPlayback(Stream<CityGisData> data, Brokereable messageBroker) {
+        this.playeable = true;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime virtualStart = LocalDateTime.parse("2015-03-10 07:12:25", formatter);//data.findFirst().get().getDateTime();
+
+        data.forEach(entry -> {
+            boolean sent = false;
+            while(!sent && playeable) {
+                LocalDateTime now = LocalDateTime.now();
+                long virtualTimeDifference = virtualStart.until(entry.getDateTime(), ChronoUnit.SECONDS);
+                long realTimeDifference = schedulerTime.until(now, ChronoUnit.SECONDS);
+                long timeDifference = virtualTimeDifference - realTimeDifference;
+
+                timeToNextMessage = timeDifference;
+
+                System.out.println(virtualTimeDifference + "-" + realTimeDifference +"="+timeDifference);
+
+                if (timeDifference <= 0) {
+                    System.out.println(entry.toJSON());
+
+                    messageBroker.publish("events",entry.toJSON());
+                    sent = true;
+                } else {
+                    try {
+                        Thread.sleep(timeToNextMessage);
+                    }catch (InterruptedException ie){
+                        System.err.println(ie);
+                    }
+                }
+            }
+        });
+    }
+
+    @Deprecated
+    public void startPlayback(LinkedHashMap<LocalDateTime, List<CityGisData>> data,Brokereable messageBroker){
         this.playeable = true;
 
 
         LocalDateTime virtualStart = data.keySet().iterator().next();
 
-        for (Map.Entry<LocalDateTime, List<CityGisModel>> entry : data.entrySet()) {
+        for (Map.Entry<LocalDateTime, List<CityGisData>> entry : data.entrySet()) {
             boolean sent = false;
             while(!sent && playeable) {
                 LocalDateTime now = LocalDateTime.now();
@@ -48,7 +85,7 @@ public class MessagePlaybackScheduler {
                 System.out.println(virtualTimeDifference + "-" + realTimeDifference +"="+timeDifference);
 
                 if (timeDifference <= 0) {
-                    for (CityGisModel cgm : entry.getValue()) {
+                    for (CityGisData cgm : entry.getValue()) {
                         System.out.println(cgm.toJSON());
                         messageBroker.publish("events",cgm.toJSON());
                     }

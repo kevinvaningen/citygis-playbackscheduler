@@ -1,8 +1,6 @@
 package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.models.CityGisModel;
-import nl.hr.cmi.citygis.models.Event;
-import nl.hr.cmi.citygis.models.iCityGisModel;
+import nl.hr.cmi.citygis.models.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,46 +12,54 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class CsvConverter {
+    private String path;
+    private String file;
+    private Stream<CityGisData> data;
 
-    public static LinkedHashMap<LocalDateTime, List<CityGisModel>> getGroupedModelsFromFile(String path, String filename, Supplier<iCityGisModel> icgm){
-        List<String> lines = getLinesFromCsv(path, filename);
-        List<CityGisModel> cgmData = getCityGisModelsFromLines(lines, icgm);
-        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = groupCityGisModelsByLocalDateTime(cgmData);
+    public CsvConverter(String path, String file) {
+        this.path = path;
+        this.file = file;
 
-        return grouped;
-    }
+        Stream<String> lines = CsvConverter.getLinesFromCsv(path, file);
 
-    public static LinkedHashMap<LocalDateTime, List<CityGisModel>> groupCityGisModelsByLocalDateTime(List<CityGisModel> cgmData) {
-        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = new LinkedHashMap<LocalDateTime, List<CityGisModel>>( cgmData.size() * 2 );
-
-        for(CityGisModel cgm : cgmData){
-            List<CityGisModel> entryList;
-            if( grouped.containsKey(cgm.getDateTime())) {
-                entryList = grouped.get(cgm.getDateTime());
-                entryList.add(cgm);
-            }else {
-                entryList = new LinkedList<>();
-                entryList.add(cgm);
-                grouped.put(cgm.getDateTime(), entryList );
-            }
+        Supplier<iCityGisModel> supplier = null;
+        switch(file){
+            case "Positions.csv":
+                supplier = () -> new Position();
+                break;
+            case "Events.csv":
+                supplier = () -> new Event();
+                break;
+            case "Monitoring.csv":
+                supplier = () -> new Monitoring();
+                break;
+            case "Connections.csv":
+                supplier = () -> new Connection();
+                break;
         }
-        return grouped;
+        this.setData(CsvConverter.getCityGisModelsFromLinesAsStream(lines, supplier) );
     }
 
-    public static List<CityGisModel> getCityGisModelsFromLines(List<String> lines, Supplier<iCityGisModel> cgm) {
-        return lines.stream()
+    public Stream<CityGisData> getData() {
+        return this.data;
+    }
+
+    public void setData(Stream<CityGisData> data) {
+        this.data = data;
+    }
+
+    public static Stream<CityGisData> getCityGisModelsFromLinesAsStream(Stream<String> lines, Supplier<iCityGisModel> cgm) {
+        return lines
                     .skip(1)
                     .map(line -> Arrays.asList(line.split(";")))
-                    .map(list -> cgm.get().create(list))
-                    .sorted((e1,e2) -> e1.getDateTime().compareTo(e2.getDateTime()))
-                    .collect(Collectors.toList());
+                    .map(list -> cgm.get().create(list));
     }
 
-
-    public static List<String> getLinesFromCsv(String pathname, String filename) {
+    public static Stream<String> getLinesFromCsv(String pathname, String filename) {
         BufferedReader breader=null;
         try{
             Path path = Paths.get(pathname, filename);
@@ -63,30 +69,22 @@ public class CsvConverter {
             System.exit(0);
         }
 
-        return breader.lines().collect(Collectors.toList());
+        return breader.lines();
     }
 
+    ////////////////////////////////////////////////////////
+    //--------------Debug methods ------------------------//
+    ////////////////////////////////////////////////////////
+
     public static void main(String[] args) {
-//        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = getGroupedModelsFromFile("", "Events.csv", () -> new Event());
+        //CsvConverter.getDistinctValues();
+//        CsvConverter.testStream();
 //
-//
-//        //debug print every entry containing more than 1 csv entry
-//        for(Map.Entry<LocalDateTime, List<CityGisModel>> entry : grouped.entrySet()){
-//            if(entry.getValue().size() > 1) {
-//                System.out.println(entry.getKey());
-//                for (CityGisModel cgm : entry.getValue()) {
-//                    System.out.print(cgm);
-//                    System.out.print(", ");
-//                }
-//                System.out.println("");
-//            }
-//        }
-        CsvConverter.getDistinctValues();
+        App a = new App();
     }
 
     public static void getDistinctValues(){
         CsvConverter.getLinesFromCsv("", "Monitoring.csv")
-                .stream()
                 .skip(1)
                 .map(line -> Arrays.asList(line.split(";")))
                 .map(arr -> arr.get(3))
@@ -94,4 +92,16 @@ public class CsvConverter {
                 .sorted()
                 .forEach(System.out::println);
     }
+    public static void testStream(){
+        Stream<String> test = CsvConverter.getLinesFromCsv("", "Monitoring.csv")
+                .skip(1)
+                .map(line -> Arrays.asList(line.split(";")))
+                .map(arr -> arr.get(3))
+                ;
+
+        System.out.println(test.findFirst().get());
+
+        test.forEach(System.out::println);
+    }
+
 }

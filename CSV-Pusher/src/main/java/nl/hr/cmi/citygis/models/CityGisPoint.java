@@ -5,20 +5,19 @@ import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.function.Function;
 
-public abstract class CityGisModel {
+public abstract class CityGisPoint extends CityGisData {
     private LocalDateTime dateTime;
     private Long unitId;
-    transient Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public CityGisModel create(LocalDateTime dateTime, Long unitId) {
+
+    public CityGisPoint create(LocalDateTime dateTime, Long unitId) {
         this.dateTime = dateTime;
         this.unitId = unitId;
         return this;
     }
 
-    public CityGisModel create(String dateTime, String unitId) {
+    public CityGisPoint create(String dateTime, String unitId) {
         this.setDateTime(dateTime);
         this.setUnitId(unitId);
         return this;
@@ -56,9 +55,5 @@ public abstract class CityGisModel {
         sb.append(", unitId=").append(unitId);
         sb.append(' ');
         return sb.toString();
-    }
-
-    public String toJSON(){
-        return gson.toJson(this);
     }
 }

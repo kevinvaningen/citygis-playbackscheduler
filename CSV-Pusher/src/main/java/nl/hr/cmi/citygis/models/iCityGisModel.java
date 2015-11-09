@@ -1,5 +1,6 @@
 package nl.hr.cmi.citygis.models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -7,6 +8,9 @@ import java.util.List;
  */
 
 public interface iCityGisModel {
+    CityGisData create(List<String> data);
 
-    CityGisModel create(List<String> data);
+    LocalDateTime getDateTime();
+
+
 }

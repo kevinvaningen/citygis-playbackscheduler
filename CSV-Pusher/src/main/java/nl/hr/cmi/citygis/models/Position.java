@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by cmi on 07-11-15.
  */
-public class Position extends CityGisModel implements iCityGisModel{
+public class Position extends CityGisPoint implements iCityGisModel{
 
     private String rDx;
     private String rDy;

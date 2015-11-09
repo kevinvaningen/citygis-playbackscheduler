@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by youritjang on 09-11-15.
  */
-public class Event extends CityGisModel implements iCityGisModel{
+public class Event extends CityGisPoint implements iCityGisModel{
     public Port port;
     byte value;
 
@@ -56,6 +56,6 @@ public class Event extends CityGisModel implements iCityGisModel{
     }
 
     public enum Port{
-        Ignition, PowerStatus
+        Ignition, PowerStatus, Connection
     }
 }

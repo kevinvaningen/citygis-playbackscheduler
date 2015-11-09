@@ -5,7 +5,9 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import nl.hr.cmi.citygis.models.Position;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 /**
@@ -46,15 +48,15 @@ public class JsonTest extends TestCase {
 
     private Position getPosition(){
         Position p = new Position();
-        Calendar c = Calendar.getInstance();
-        p.setDateTime(c.getTime());
+        LocalDateTime dateTime = LocalDateTime.now();
+        p.setDateTime(dateTime);
         p.setUnitId("357566000058106");
         p.setrDx("158126.102542985");
         p.setrDy("380446.027478599");
         p.setCourse(31);
         p.setNumSattellites(7);
         p.setHdop(1);
-        p.setQuality(Position.GpsQuality.GPS);
+        p.setQuality("GPS");
         return p;
     }
 }

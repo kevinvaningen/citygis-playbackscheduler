@@ -67,29 +67,31 @@ public class CsvConverter {
     }
 
     public static void main(String[] args) {
-        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = getGroupedModelsFromFile("", "Events.csv", () -> new Event());
-
-
-        //debug print every entry containing more than 1 csv entry
-        for(Map.Entry<LocalDateTime, List<CityGisModel>> entry : grouped.entrySet()){
-            if(entry.getValue().size() > 1) {
-                System.out.println(entry.getKey());
-                for (CityGisModel cgm : entry.getValue()) {
-                    System.out.print(cgm);
-                    System.out.print(", ");
-                }
-                System.out.println("");
-            }
-        }
+//        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = getGroupedModelsFromFile("", "Events.csv", () -> new Event());
+//
+//
+//        //debug print every entry containing more than 1 csv entry
+//        for(Map.Entry<LocalDateTime, List<CityGisModel>> entry : grouped.entrySet()){
+//            if(entry.getValue().size() > 1) {
+//                System.out.println(entry.getKey());
+//                for (CityGisModel cgm : entry.getValue()) {
+//                    System.out.print(cgm);
+//                    System.out.print(", ");
+//                }
+//                System.out.println("");
+//            }
+//        }
+        CsvConverter.getDistinctValues();
     }
 
     public static void getDistinctValues(){
-        CsvConverter.getLinesFromCsv("", "Positions.csv")
+        CsvConverter.getLinesFromCsv("", "Monitoring.csv")
                 .stream()
                 .skip(1)
                 .map(line -> Arrays.asList(line.split(";")))
-                .map(arr -> arr.get(8))
+                .map(arr -> arr.get(3))
                 .distinct()
+                .sorted()
                 .forEach(System.out::println);
     }
 }

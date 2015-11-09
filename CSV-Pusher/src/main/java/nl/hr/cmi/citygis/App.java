@@ -38,6 +38,8 @@ public class App
                 long realTimeDifference = start.until(now, ChronoUnit.SECONDS);
                 long timeDifference = virtualTimeDifference - realTimeDifference;
 
+                System.out.println(virtualTimeDifference + "-" + realTimeDifference +"="+timeDifference);
+
                 if (timeDifference <= 0) {
                     for (CityGisModel cgm : entry.getValue()) {
 //                        connection.publishConnectAndTransfer(cgm.toString());
@@ -65,13 +67,5 @@ public class App
         }
         connection.disconnectFromBroker();
         System.exit(0);
-    }
-
-
-
-    @Deprecated
-    private String createExampleMessage() {
-        JsonPosition jsp = new JsonPosition();
-        return jsp.toJSON();
     }
 }

@@ -114,6 +114,7 @@ public class Position extends CityGisModel implements iCityGisModel{
         this.quality = quality;
     }
 
+    @Deprecated
     public enum GpsQuality{
         Gps("Gps"),
         dGps("dGps"),

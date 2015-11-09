@@ -1,5 +1,7 @@
 package nl.hr.cmi.citygis.models;
 
+import com.google.gson.Gson;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
@@ -7,6 +9,7 @@ import java.util.function.Function;
 public abstract class CityGisModel {
     private LocalDateTime dateTime;
     private Long unitId;
+    Gson jsonBuilder = new Gson();
 
     public CityGisModel create(LocalDateTime dateTime, Long unitId) {
         this.dateTime = dateTime;
@@ -52,5 +55,9 @@ public abstract class CityGisModel {
         sb.append(", unitId=").append(unitId);
         sb.append(' ');
         return sb.toString();
+    }
+
+    public String toJSON(){
+        return jsonBuilder.toJson(this);
     }
 }

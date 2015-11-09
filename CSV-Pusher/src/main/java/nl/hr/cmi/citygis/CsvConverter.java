@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class CsvConverter {
 
-    public static LinkedHashMap<LocalDateTime, List<CityGisModel>> getGroupedCityGisModelsByLocalDateTimeFromFileName(String path, String filename, Supplier<iCityGisModel> icgm){
+    public static LinkedHashMap<LocalDateTime, List<CityGisModel>> getGroupedModelsFromFile(String path, String filename, Supplier<iCityGisModel> icgm){
         List<String> lines = getLinesFromCsv(path, filename);
         List<CityGisModel> cgmData = getCityGisModelsFromLines(lines, icgm);
         LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = groupCityGisModelsByLocalDateTime(cgmData);
@@ -67,7 +67,7 @@ public class CsvConverter {
     }
 
     public static void main(String[] args) {
-        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = getGroupedCityGisModelsByLocalDateTimeFromFileName("", "Events.csv", () -> new Event());
+        LinkedHashMap<LocalDateTime, List<CityGisModel>> grouped = getGroupedModelsFromFile("", "Events.csv", () -> new Event());
 
 
         //debug print every entry containing more than 1 csv entry

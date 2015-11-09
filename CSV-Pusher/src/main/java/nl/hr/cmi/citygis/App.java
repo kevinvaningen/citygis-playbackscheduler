@@ -4,11 +4,9 @@ import nl.hr.cmi.citygis.models.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * CityGis CSV pusher
@@ -18,10 +16,8 @@ public class App
 {
     public static void main(String[] args) {
         App a = new App();
-        LinkedHashMap<LocalDateTime, List<CityGisModel>> data = CsvConverter.getGroupedCityGisModelsByLocalDateTimeFromFileName("","Positions.csv", () -> new Position());
-
+        LinkedHashMap<LocalDateTime, List<CityGisModel>> data = CsvConverter.getGroupedModelsFromFile("","Events.csv", () -> new Event());
         a.runMessages(data);
-
     }
 
     public void runMessages(LinkedHashMap<LocalDateTime, List<CityGisModel>> data){
@@ -40,14 +36,12 @@ public class App
                 LocalDateTime now = LocalDateTime.now();
                 long virtualTimeDifference = virtualStart.until(entry.getKey(), ChronoUnit.SECONDS);
                 long realTimeDifference = start.until(now, ChronoUnit.SECONDS);
-
                 long timeDifference = virtualTimeDifference - realTimeDifference;
-                System.out.println(virtualTimeDifference +" - "+ realTimeDifference +" = "+ timeDifference);
 
                 if (timeDifference <= 0) {
                     for (CityGisModel cgm : entry.getValue()) {
 //                        connection.publishConnectAndTransfer(cgm.toString());
-                        System.out.println(cgm);
+                        System.out.println(cgm.toJSON());
                     }
                     sent = true;
                 } else {

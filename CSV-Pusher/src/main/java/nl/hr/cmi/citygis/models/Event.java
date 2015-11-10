@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by youritjang on 09-11-15.
  */
-public class Event extends CityGisPoint implements iCityGisModel{
+public class Event extends CityGisPoint{
     public Port port;
     byte value;
 

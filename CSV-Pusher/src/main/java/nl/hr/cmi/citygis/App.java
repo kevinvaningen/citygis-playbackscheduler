@@ -1,5 +1,7 @@
 package nl.hr.cmi.citygis;
 
+import nl.hr.cmi.citygis.models.FileMapping;
+
 import java.time.LocalDateTime;
 
 /**
@@ -18,7 +20,8 @@ public class App {
         mr = new MessageFileRetriever();
 
         System.out.println("Starting message schedular.");
-        scheduler.startPlayback(mr.getDataFromCSV("Monitoring.csv"),connection);
+
+        scheduler.startPlayback(mr.getDataFromCSV(FileMapping.CONNECTIONS),connection);
     }
 
     public static void main(String[] args){

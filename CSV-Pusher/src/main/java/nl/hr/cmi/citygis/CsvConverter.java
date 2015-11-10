@@ -14,36 +14,32 @@ import java.util.stream.Stream;
 
 
 public class CsvConverter {
-    private String path;
+    private String path = "";
     private String file;
     private Stream<CityGisData> data;
 
-    public CsvConverter(String path, String file) {
+    public CsvConverter(FileMapping file) {
+        Supplier<iCityGisModel> supplier = file.getSupplier();
+
+        Stream<String> lines = getLinesFromCsv(file.getFileName());
+
+        setData(getCityGisModelsFromLinesAsStream(lines, supplier));
+    }
+
+    public void setPath(String path) {
         this.path = path;
-        this.file = file;
+    }
 
-        Stream<String> lines = CsvConverter.getLinesFromCsv(path, file);
+    private CsvConverter(String file) {
+        this.file = FileMapping.valueOf(file).getFileName();
+        Supplier<iCityGisModel> supplier = FileMapping.valueOf(file).getSupplier();
 
-        Supplier<iCityGisModel> supplier = null;
-        switch(file){
-            case "Positions.csv":
-                supplier = () -> new Position();
-                break;
-            case "Events.csv":
-                supplier = () -> new Event();
-                break;
-            case "Monitoring.csv":
-                supplier = () -> new Monitoring();
-                break;
-            case "Connections.csv":
-                supplier = () -> new Connection();
-                break;
-        }
-        this.setData(CsvConverter.getCityGisModelsFromLinesAsStream(lines, supplier));
+        Stream<String> lines = getLinesFromCsv(this.file);
+        setData(getCityGisModelsFromLinesAsStream(lines, supplier));
     }
 
     public Stream<CityGisData> getData() {
-        return this.data;
+        return data;
     }
 
     public void setData(Stream<CityGisData> data) {
@@ -57,10 +53,10 @@ public class CsvConverter {
                     .map(list -> cgm.get().create(list));
     }
 
-    public static Stream<String> getLinesFromCsv(String pathname, String filename) {
-        BufferedReader breader=null;
+    public Stream<String> getLinesFromCsv(String filename) {
+        BufferedReader breader = null;
         try{
-            Path path = Paths.get(pathname, filename);
+            Path path = Paths.get(this.path, filename);
             breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
         }catch(IOException exception){
             System.out.println("Error occurred while trying to read the file");

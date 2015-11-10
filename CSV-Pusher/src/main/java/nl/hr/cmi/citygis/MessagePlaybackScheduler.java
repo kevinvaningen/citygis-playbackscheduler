@@ -65,42 +65,6 @@ public class MessagePlaybackScheduler {
         });
     }
 
-    @Deprecated
-    public void startPlayback(LinkedHashMap<LocalDateTime, List<CityGisData>> data,Brokereable messageBroker){
-        this.playeable = true;
-
-
-        LocalDateTime virtualStart = data.keySet().iterator().next();
-
-        for (Map.Entry<LocalDateTime, List<CityGisData>> entry : data.entrySet()) {
-            boolean sent = false;
-            while(!sent && playeable) {
-                LocalDateTime now = LocalDateTime.now();
-                long virtualTimeDifference = virtualStart.until(entry.getKey(), ChronoUnit.SECONDS);
-                long realTimeDifference = schedulerTime.until(now, ChronoUnit.SECONDS);
-                long timeDifference = virtualTimeDifference - realTimeDifference;
-
-                timeToNextMessage = timeDifference;
-
-                System.out.println(virtualTimeDifference + "-" + realTimeDifference +"="+timeDifference);
-
-                if (timeDifference <= 0) {
-                    for (CityGisData cgm : entry.getValue()) {
-                        System.out.println(cgm.toJSON());
-                        messageBroker.publish("events",cgm.toJSON());
-                    }
-                    sent = true;
-                } else {
-                    try {
-                        Thread.sleep(500);
-                    }catch (InterruptedException ie){
-                        System.err.println(ie);
-                    }
-                }
-            }
-        }
-    }
-
     public void stopPlayback(){
         this.playeable = false;
     }

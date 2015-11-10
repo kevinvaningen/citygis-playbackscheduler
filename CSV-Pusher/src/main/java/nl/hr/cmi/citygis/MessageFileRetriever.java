@@ -1,6 +1,8 @@
 package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.models.CityGisData;
+import nl.hr.cmi.citygis.models.FileMapping;
+
 import java.util.stream.Stream;
 
 /**
@@ -8,33 +10,15 @@ import java.util.stream.Stream;
  */
 public class MessageFileRetriever {
 
-    private String fileName = FileNames.EVENTS.getName();
+    private String fileName = FileMapping.EVENTS.getFileName();
 
-    public Stream<CityGisData> getDataFromCSV() {
-        return getDataFromCSV(fileName);
-    }
+    public Stream<CityGisData> getDataFromCSV(FileMapping fileMapping) {
+        System.out.println("Reverting file" + fileMapping.getFileName());
 
-    public Stream<CityGisData> getDataFromCSV(String fileName) {
-        System.out.println("Reverting file" + fileName);
-        CsvConverter csvc = new CsvConverter("",fileName);
+        CsvConverter csvc = new CsvConverter(fileMapping);
         Stream<CityGisData> data = csvc.getData();
 
         return data;
     }
 
-
-    public enum FileNames{
-        EVENTS("Events.csv"),
-        MONITORING("Monitoring.csv"),
-        POSITIONS("Positions.csv"),
-        CONNECTIONS("Connections.csv");
-
-        private final String name;
-        private FileNames(String name){
-            this.name = name;
-        }
-        String getName(){
-            return name;
-        }
-    }
 }

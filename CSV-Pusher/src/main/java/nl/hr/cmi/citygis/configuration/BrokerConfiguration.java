@@ -27,4 +27,12 @@ public class BrokerConfiguration {
     public String getClientId(){
         return (String) props.get("MQTT_CLIENT_ID");
     }
+    public boolean usesCredentials(){
+        if(getBrokerPassword()==null || getBrokerPassword().trim().equals("")){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
+

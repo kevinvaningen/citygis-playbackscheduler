@@ -3,7 +3,9 @@ package nl.hr.cmi.citygis;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import nl.hr.cmi.citygis.models.CityGisData;
+import nl.hr.cmi.citygis.models.FileMapping;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -19,43 +21,12 @@ public class CsvTest extends TestCase {
     }
 
     public void testCsvFileRetrieval() throws Exception {
-        Stream<CityGisData> data = mr.getDataFromCSV();
+        Stream<CityGisData> data = mr.getDataFromCSV(FileMapping.MONITORING);
         Assert.assertTrue(data.count() > 0);
     }
 
     public void testCsvDataCheckFirstDataElement() throws Exception {
-        Stream<CityGisData> data = mr.getDataFromCSV();
+        Stream<CityGisData> data = mr.getDataFromCSV(FileMapping.MONITORING);
         Assert.assertNotNull(data.findFirst().get());
-    }
-
-    public void testCsvDistinctValuesWithoutExceptions(){
-        getDistinctValues();
-        //Check for no Exceptions
-        Assert.assertTrue(true);
-    }
-
-    public void testCsvTestStream(){
-        testStream();
-        //Check for no Exceptions
-        Assert.assertTrue(true);
-    }
-
-    private static void getDistinctValues(){
-        CsvConverter.getLinesFromCsv("", "Monitoring.csv")
-                .skip(1)
-                .map(line -> Arrays.asList(line.split(";")))
-                .map(arr -> arr.get(3))
-                .distinct()
-                .sorted()
-                .forEach(System.out::println);
-    }
-    public static void testStream(){
-        Stream<String> test = CsvConverter.getLinesFromCsv("", "Monitoring.csv")
-                .skip(1)
-                .map(line -> Arrays.asList(line.split(";")))
-                .map(arr -> arr.get(3))
-                ;
-        System.out.println(test.findFirst().get());
-        test.forEach(System.out::println);
     }
 }

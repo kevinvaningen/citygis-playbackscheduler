@@ -11,7 +11,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 /**
  * Created by cmi on 09-11-15.
  */
-public class BrokereableConnector implements Brokereable {
+public class MqttBrokerClientConnector implements Publishable {
     MqttClient mqttConnectedClient;
     MqttConnectOptions connectionOptions = new MqttConnectOptions();
 
@@ -19,20 +19,20 @@ public class BrokereableConnector implements Brokereable {
     private String broker;
     private String clientId;
 
-    public BrokereableConnector(){
-        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ ", defaulting to config.properties configuration.");
+    public MqttBrokerClientConnector(){
+        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ ", defaulting to config.properties configuration.");
         ConfigurationReader configurationReader = new ConfigurationReader();
         BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
         setConnectionProperties(brokerConfiguration);
         }
 
-    public BrokereableConnector(BrokerConfiguration brokerConfiguration){
-        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using broker argument configuration.");
+    public MqttBrokerClientConnector(BrokerConfiguration brokerConfiguration){
+        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ " using broker argument configuration.");
         setConnectionProperties(brokerConfiguration);
     }
 
-    public BrokereableConnector(String brokerUrl, String clientId, int qos, BrokerConfiguration brokerConfiguration) {
-        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using argument configuration.");
+    public MqttBrokerClientConnector(String brokerUrl, String clientId, int qos, BrokerConfiguration brokerConfiguration) {
+        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ " using argument configuration.");
         this.broker = brokerUrl;
         this.clientId = clientId;
         this.qos = qos;
@@ -45,8 +45,10 @@ public class BrokereableConnector implements Brokereable {
         this.broker = brokerConfiguration.getBrokerUrl();
         this.clientId = brokerConfiguration.getClientId();
         connectionOptions.setCleanSession(true);
-        connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
-        connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
+        if(brokerConfiguration.usesCredentials()) {
+            connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
+            connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
+        }
     }
 
     public void connect(){
@@ -68,7 +70,7 @@ public class BrokereableConnector implements Brokereable {
     }
 
     public boolean isConnectedToServer(){
-        if(mqttConnectedClient==null){
+        if(mqttConnectedClient== null){
             return false;
         }
         return mqttConnectedClient.isConnected();
@@ -76,8 +78,8 @@ public class BrokereableConnector implements Brokereable {
 
     public void disconnectFromBroker(){
         try {
-        mqttConnectedClient.disconnect();
-        System.out.println("Disconnected");
+            mqttConnectedClient.disconnect();
+            System.out.println("Disconnected");
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());

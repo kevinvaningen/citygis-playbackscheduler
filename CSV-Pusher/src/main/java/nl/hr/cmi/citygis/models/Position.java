@@ -15,7 +15,6 @@ public class Position extends CityGisPoint{
     private int hdop;
     private String quality;
 
-
     public Position create(List<String> data){
         return create(
                 data.get(0),

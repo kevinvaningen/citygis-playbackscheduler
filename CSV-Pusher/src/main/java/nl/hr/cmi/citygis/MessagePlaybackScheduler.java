@@ -31,7 +31,7 @@ public class MessagePlaybackScheduler {
         System.out.println("Created scheduler using inputted time:" + schedulerTime.toString());
     }
 
-    public void startPlayback(Stream<CityGisData> data, Brokereable messageBroker) {
+    public void startPlayback(Stream<CityGisData> data, Publishable messageBroker) {
         this.playeable = true;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

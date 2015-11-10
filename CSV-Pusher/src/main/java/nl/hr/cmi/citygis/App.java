@@ -9,23 +9,23 @@ import java.time.LocalDateTime;
  *
  */
 public class App {
-    BrokereableConnector connection;
+    MqttBrokerClientConnector connection;
     MessagePlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
     public App(){
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
-        connection = new BrokereableConnector();
+        connection = new MqttBrokerClientConnector();
         scheduler = new MessagePlaybackScheduler(LocalDateTime.now());
         mr = new MessageFileRetriever();
 
         System.out.println("Starting message schedular.");
 
-        scheduler.startPlayback(mr.getDataFromCSV(FileMapping.CONNECTIONS),connection);
+        scheduler.startPlayback(mr.getDataFromCSV(FileMapping.MONITORING),connection);
     }
 
     public static void main(String[] args){
         App a = new App();
-    }
+         }
 
 }

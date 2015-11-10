@@ -1,11 +1,20 @@
 package nl.hr.cmi.citygis.mocks;
 
-import nl.hr.cmi.citygis.Brokereable;
+import nl.hr.cmi.citygis.Publishable;
+import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 
 /**
  * Created by cmi on 09-11-15.
  */
-public class MockBroker implements Brokereable {
+public class MockClientBroker implements Publishable {
+
+    public MockClientBroker() {
+    }
+    public MockClientBroker(BrokerConfiguration brokerConfiguration) {
+    }
+
+
+
     @Override
     public boolean publish(String topic, String message) {
         System.out.println("Mock succesfull event sended at: "+ topic + " Message is: "+message);

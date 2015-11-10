@@ -12,5 +12,4 @@ public interface iCityGisModel {
 
     LocalDateTime getDateTime();
 
-
 }

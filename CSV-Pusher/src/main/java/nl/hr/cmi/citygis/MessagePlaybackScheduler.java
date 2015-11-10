@@ -47,8 +47,6 @@ public class MessagePlaybackScheduler {
 
                 timeToNextMessage = timeDifference;
 
-                System.out.println(virtualTimeDifference + "-" + realTimeDifference +"="+timeDifference);
-
                 if (timeDifference <= 0) {
                     System.out.println(entry.toJSON());
 
@@ -56,7 +54,7 @@ public class MessagePlaybackScheduler {
                     sent = true;
                 } else {
                     try {
-                        Thread.sleep(timeToNextMessage);
+                        Thread.sleep(timeToNextMessage * 1000);
                     }catch (InterruptedException ie){
                         System.err.println(ie);
                     }

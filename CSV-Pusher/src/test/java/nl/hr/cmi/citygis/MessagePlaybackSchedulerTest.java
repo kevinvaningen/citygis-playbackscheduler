@@ -5,11 +5,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import nl.hr.cmi.citygis.mocks.MockBroker;
-import nl.hr.cmi.citygis.models.CityGisModel;
+import nl.hr.cmi.citygis.models.CityGisData;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by cmi on 09-11-15.
@@ -17,7 +18,7 @@ import java.util.List;
 public class MessagePlaybackSchedulerTest extends TestCase {
     MessageFileRetriever mr;
     MessagePlaybackScheduler scheduler;
-    LinkedHashMap<LocalDateTime, List<CityGisModel>> data;
+    Stream<CityGisData> data;
     Brokereable messageBroker;
 
     public void setUp() throws Exception {

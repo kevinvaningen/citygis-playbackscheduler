@@ -1,5 +1,7 @@
 package nl.hr.cmi.citygis;
 
+import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
+import nl.hr.cmi.citygis.configuration.ConfigurationReader;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -11,18 +13,28 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
  */
 public class BrokereableConnector implements Brokereable {
     MqttClient mqttConnectedClient;
-    String topic        = "";
-    String content      = "";
-    int qos             = 0;
-    String broker       = "tcp://localhost:1883";
-    String clientId     = "CityGis csv pusher";
+    private int qos;
+    private String broker;
+    private String clientId;
 
     public BrokereableConnector(){
-        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using default configuration.");
+        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ ", defaulting to config.properties configuration.");
+        ConfigurationReader configurationReader = new ConfigurationReader();
+        BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
+        this.qos = brokerConfiguration.getBrokerQos();
+        this.broker = brokerConfiguration.getBrokerUrl();
+        this.clientId = brokerConfiguration.getClientId();
+    }
+
+    public BrokereableConnector(BrokerConfiguration brokerConfiguration){
+        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using broker argument configuration.");
+        this.qos = brokerConfiguration.getBrokerQos();
+        this.broker = brokerConfiguration.getBrokerUrl();
+        this.clientId = brokerConfiguration.getClientId();
     }
 
     public BrokereableConnector(String brokerUrl, String clientId, int qos) {
-        //TODO pull up connection vars to ne object
+        System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using argument configuration.");
         this.broker = brokerUrl;
         this.clientId = clientId;
         this.qos = qos;

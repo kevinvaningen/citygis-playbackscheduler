@@ -8,10 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -41,7 +39,7 @@ public class CsvConverter {
                 supplier = () -> new Connection();
                 break;
         }
-        this.setData(CsvConverter.getCityGisModelsFromLinesAsStream(lines, supplier) );
+        this.setData(CsvConverter.getCityGisModelsFromLinesAsStream(lines, supplier));
     }
 
     public Stream<CityGisData> getData() {
@@ -71,37 +69,4 @@ public class CsvConverter {
 
         return breader.lines();
     }
-
-    ////////////////////////////////////////////////////////
-    //--------------Debug methods ------------------------//
-    ////////////////////////////////////////////////////////
-
-    public static void main(String[] args) {
-        //CsvConverter.getDistinctValues();
-//        CsvConverter.testStream();
-//
-        App a = new App();
-    }
-
-    public static void getDistinctValues(){
-        CsvConverter.getLinesFromCsv("", "Monitoring.csv")
-                .skip(1)
-                .map(line -> Arrays.asList(line.split(";")))
-                .map(arr -> arr.get(3))
-                .distinct()
-                .sorted()
-                .forEach(System.out::println);
-    }
-    public static void testStream(){
-        Stream<String> test = CsvConverter.getLinesFromCsv("", "Monitoring.csv")
-                .skip(1)
-                .map(line -> Arrays.asList(line.split(";")))
-                .map(arr -> arr.get(3))
-                ;
-
-        System.out.println(test.findFirst().get());
-
-        test.forEach(System.out::println);
-    }
-
 }

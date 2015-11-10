@@ -18,7 +18,7 @@ public class App {
         mr = new MessageFileRetriever();
 
         System.out.println("Starting message schedular.");
-        scheduler.startPlayback(mr.getDataFromCSV(),connection);
+        scheduler.startPlayback(mr.getDataFromCSV("Monitoring.csv"),connection);
     }
 
     public static void main(String[] args){

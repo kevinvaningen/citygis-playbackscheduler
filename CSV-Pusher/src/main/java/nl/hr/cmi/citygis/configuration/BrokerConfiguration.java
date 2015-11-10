@@ -15,11 +15,11 @@ public class BrokerConfiguration {
     public String getBrokerUrl(){
         return (String) props.get("MQTT_BROKER_URL");
     }
-    public int getBrokerUsername(){
-        return Integer.parseInt((String)props.get("MQTT_BROKER_USERNAME"));
+    public String getBrokerUsername(){
+        return (String)props.get("MQTT_BROKER_USERNAME");
     }
-    public int getBrokerPassword(){
-        return Integer.parseInt((String)props.get("MQTT_BROKER_PASSWORKD"));
+    public String getBrokerPassword(){
+        return (String)props.get("MQTT_BROKER_PASSWORKD");
     }
     public int getBrokerQos(){
         return Integer.parseInt((String)props.get("MQTT_QOS"));

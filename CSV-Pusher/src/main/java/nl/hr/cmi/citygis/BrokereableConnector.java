@@ -13,6 +13,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
  */
 public class BrokereableConnector implements Brokereable {
     MqttClient mqttConnectedClient;
+    MqttConnectOptions connectionOptions = new MqttConnectOptions();
+
     private int qos;
     private String broker;
     private String clientId;
@@ -21,23 +23,30 @@ public class BrokereableConnector implements Brokereable {
         System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ ", defaulting to config.properties configuration.");
         ConfigurationReader configurationReader = new ConfigurationReader();
         BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
-        this.qos = brokerConfiguration.getBrokerQos();
-        this.broker = brokerConfiguration.getBrokerUrl();
-        this.clientId = brokerConfiguration.getClientId();
-    }
+        setConnectionProperties(brokerConfiguration);
+        }
 
     public BrokereableConnector(BrokerConfiguration brokerConfiguration){
         System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using broker argument configuration.");
-        this.qos = brokerConfiguration.getBrokerQos();
-        this.broker = brokerConfiguration.getBrokerUrl();
-        this.clientId = brokerConfiguration.getClientId();
+        setConnectionProperties(brokerConfiguration);
     }
 
-    public BrokereableConnector(String brokerUrl, String clientId, int qos) {
+    public BrokereableConnector(String brokerUrl, String clientId, int qos, BrokerConfiguration brokerConfiguration) {
         System.out.println("Setting up "+BrokereableConnector.class.getSimpleName()+ " using argument configuration.");
         this.broker = brokerUrl;
         this.clientId = clientId;
         this.qos = qos;
+        connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
+        connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
+
+    }
+    private void setConnectionProperties(BrokerConfiguration brokerConfiguration){
+        this.qos = brokerConfiguration.getBrokerQos();
+        this.broker = brokerConfiguration.getBrokerUrl();
+        this.clientId = brokerConfiguration.getClientId();
+        connectionOptions.setCleanSession(true);
+        connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
+        connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
     }
 
     public void connect(){
@@ -45,10 +54,8 @@ public class BrokereableConnector implements Brokereable {
         try {
             //TDOO create configuration file for message broker settings
             mqttConnectedClient = new MqttClient(broker, clientId, persistence);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
             System.out.println("Connecting to broker: " + broker);
-            mqttConnectedClient.connect(connOpts);
+            mqttConnectedClient.connect(connectionOptions);
             System.out.println("Connected");
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());

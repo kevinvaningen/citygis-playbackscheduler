@@ -9,8 +9,18 @@ import java.util.stream.Stream;
  * Created by cmi on 09-11-15.
  */
 public class MessageFileRetriever {
-
     private String fileName = FileMapping.EVENTS.getFileName();
+
+
+    public Stream<CityGisData> getDataFromCSV(String path, FileMapping fileMapping) {
+        System.out.println("Reverting file" + fileMapping.getFileName());
+
+        CsvConverter csvc = new CsvConverter(fileMapping);
+        csvc.setPath(path);
+        Stream<CityGisData> data = csvc.getData();
+
+        return data;
+    }
 
     public Stream<CityGisData> getDataFromCSV(FileMapping fileMapping) {
         System.out.println("Reverting file" + fileMapping.getFileName());

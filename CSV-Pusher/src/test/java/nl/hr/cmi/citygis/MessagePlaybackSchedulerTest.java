@@ -4,12 +4,13 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import nl.hr.cmi.citygis.mocks.MockClientBroker;
+import nl.hr.cmi.citygis.mocks.MockBroker;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 
-import java.io.File;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -26,6 +27,8 @@ public class MessagePlaybackSchedulerTest extends TestCase {
         mr = new MessageFileRetriever();
         data = mr.getDataFromCSV(FileMapping.MONITORING);
         messageBroker = new MockClientBroker();
+        data = mr.getDataFromCSV("src/test/resources/",FileMapping.EVENTS);
+        messageBroker = new MockBroker();
     }
 
     /**

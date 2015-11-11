@@ -54,6 +54,7 @@ public class MessagePlaybackScheduler {
                     sent = true;
                 } else {
                     try {
+                        System.out.println(String.format("Waiting for %d seconds", timeToNextMessage));
                         Thread.sleep(timeToNextMessage * 1000);
                     }catch (InterruptedException ie){
                         System.err.println(ie);

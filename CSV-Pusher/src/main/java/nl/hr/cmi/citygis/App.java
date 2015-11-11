@@ -4,9 +4,8 @@ import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import org.apache.commons.cli.*;
 
+
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -14,13 +13,13 @@ import java.util.stream.Stream;
  * CityGis CSV pusher
  */
 public class App {
-    MqttBrokerClientConnector connection;
+    Publishable connection;
     MessagePlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
-    String file;
-    String path;
-    FileMapping fileMapping;
+   private String file;
+   private String path;
+   private FileMapping fileMapping;
 
     public App(String file, String path, FileMapping fileMapping) {
         this(fileMapping);
@@ -33,7 +32,7 @@ public class App {
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
         connection = new MqttBrokerClientConnector();
 
-        connection = new BrokereableConnector();
+        connection = new MqttBrokerClientConnector();
         scheduler = new MessagePlaybackScheduler(LocalDateTime.now());
         mr = new MessageFileRetriever();
     }
@@ -48,8 +47,7 @@ public class App {
 
 
     public static void main(String[] args){
-        App a = new App();
-         }
+
         Options options = createOptions();
         showHelpMessage(args, options);
 

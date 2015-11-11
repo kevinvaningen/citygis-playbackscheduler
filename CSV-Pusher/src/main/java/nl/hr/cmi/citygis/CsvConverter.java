@@ -30,6 +30,17 @@ public class CsvConverter {
     }
 
 
+/*    public CsvConverter(FileMapping file) {
+        Supplier<iCityGisModel> supplier = file.getSupplier();
+        Stream<String> lines = getLinesFromCsv(file.getFileName());
+
+        setData(getCityGisModelsFromLinesAsStream(lines, supplier));
+    }*/
+    private CsvConverter(String file) {
+        this.file = FileMapping.valueOf(file).getFileName();
+        Supplier<iCityGisModel> supplier = FileMapping.valueOf(file).getSupplier();
+    }
+
     /**
      * Default path is project root. You can override it here
      * @param path

@@ -31,7 +31,7 @@ public class MockBrokerTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite( BrokereableIntegrationTest.class );
+        return new TestSuite( MockBrokerTest.class );
     }
 
     public void setUp() throws Exception {
@@ -40,6 +40,7 @@ public class MockBrokerTest extends TestCase {
         c = Calendar.getInstance();
         super.setUp();
     }
+
 
     public void testConnection(){
         bc.connect();
@@ -67,7 +68,7 @@ public class MockBrokerTest extends TestCase {
         Assert.assertTrue(bc.isConnectedToServer());
         Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
         Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
-        Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
+        Assert.assertTrue(bc.publish("topic/", "TestMessage0" + c.getTime()));
         Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
         try {
             Thread.sleep(10);
@@ -78,5 +79,10 @@ public class MockBrokerTest extends TestCase {
         Assert.assertTrue(bc.isConnectedToServer());
 
         bc.disconnectFromBroker();
+    }
+
+
+    private Properties getTestProperties() {
+        return null;
     }
 }

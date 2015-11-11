@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public abstract class CityGisPoint extends CityGisData {
+    public static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
     private LocalDateTime dateTime;
     private Long unitId;
 
@@ -32,7 +33,10 @@ public abstract class CityGisPoint extends CityGisData {
     }
 
     public void setDateTime(String dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateTime == null || dateTime.trim().equals("")){
+            throw new IllegalArgumentException("The argument :" + dateTime +" does not fit format:"+dateTimeFormat);
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
         this.dateTime = LocalDateTime.parse(dateTime, formatter);
     }
 

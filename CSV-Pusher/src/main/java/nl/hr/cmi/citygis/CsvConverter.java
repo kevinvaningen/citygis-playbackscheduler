@@ -1,6 +1,9 @@
 package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.models.*;
+import nl.hr.cmi.citygis.models.CityGisData;
+import nl.hr.cmi.citygis.models.FileMapping;
+import nl.hr.cmi.citygis.models.iCityGisModel;
+import rx.Observable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,13 +32,16 @@ public class CsvConverter {
         file     = fileMapping.getFileName();
     }
 
-
     /**
      * Default path is project root. You can override it here
      * @param path
      */
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Observable<CityGisData> getObservableData() {
+        return Observable.from(getData()::iterator);
     }
 
     public Stream<CityGisData> getData() {
@@ -47,7 +53,6 @@ public class CsvConverter {
     public void setData(Stream<CityGisData> data) {
         this.data = data;
     }
-
 
     public static Stream<CityGisData> getCityGisModelsFromLinesAsStream(Stream<String> lines, Supplier<iCityGisModel> cgm) {
         return lines

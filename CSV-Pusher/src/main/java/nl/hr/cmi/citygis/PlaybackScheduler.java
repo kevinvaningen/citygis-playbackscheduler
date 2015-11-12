@@ -17,7 +17,7 @@ public abstract class PlaybackScheduler {
     long timeToNextMessage = -1;
     boolean playeable = true;
 
-    Brokereable messageBroker;
+    Publishable messageBroker;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     /**
@@ -39,13 +39,13 @@ public abstract class PlaybackScheduler {
         System.out.println("Created scheduler using inputted time:" + schedulerTime.toString());
     }
 
-    public PlaybackScheduler(LocalDateTime schedulerTime, Brokereable messageBroker) {
+    public PlaybackScheduler(LocalDateTime schedulerTime, Publishable messageBroker) {
         this.schedulerTime = schedulerTime;
         this.messageBroker = messageBroker;
         fileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter); //// TODO: 12-11-15 up up and away
     }
 
-    public void setMessageBroker(Brokereable messageBroker) {
+    public void setMessageBroker(Publishable messageBroker) {
         this.messageBroker = messageBroker;
     }
 
@@ -76,7 +76,7 @@ public abstract class PlaybackScheduler {
     }
 
     @Deprecated
-    private boolean sendOrWait(Brokereable messageBroker, CityGisData entry, boolean sent, long timeDifference) {
+    private boolean sendOrWait(Publishable messageBroker, CityGisData entry, boolean sent, long timeDifference) {
         if (timeDifference <= 0) {
             System.out.println(entry.toJSON());
 

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<CityGisData> {
     ObservablePlaybackScheduler mps;
 
-    CityGisDataSubscriber(LocalDateTime schedulerTime, Brokereable messageBroker){
+    CityGisDataSubscriber(LocalDateTime schedulerTime, Publishable messageBroker){
         mps = new ObservablePlaybackScheduler(schedulerTime, messageBroker);
     }
 

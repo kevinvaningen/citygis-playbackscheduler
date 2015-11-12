@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * CityGis CSV pusher
  */
 public class App {
-    BrokereableConnector connection;
+    Publishable connection;
     StreamPlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
@@ -30,7 +30,7 @@ public class App {
     public App(FileMapping fileMapping){
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
-        connection = new BrokereableConnector();
+        connection = new MqttBrokerClientConnector();
         scheduler = new StreamPlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }

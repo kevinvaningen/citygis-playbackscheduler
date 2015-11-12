@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 public class ObservablePlaybackScheduler extends PlaybackScheduler{
 
-    public ObservablePlaybackScheduler(LocalDateTime schedulerTime, Brokereable messageBroker) {
+    public ObservablePlaybackScheduler(LocalDateTime schedulerTime, Publishable messageBroker) {
         super(schedulerTime, messageBroker);
     }
 

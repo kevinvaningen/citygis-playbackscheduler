@@ -16,7 +16,7 @@ public class StreamPlaybackScheduler extends PlaybackScheduler{
 //        super(time);
 //    }
 
-    public StreamPlaybackScheduler(LocalDateTime schedulerTime, Brokereable messageBroker) {
+    public StreamPlaybackScheduler(LocalDateTime schedulerTime, Publishable messageBroker) {
         super(schedulerTime, messageBroker);
     }
 

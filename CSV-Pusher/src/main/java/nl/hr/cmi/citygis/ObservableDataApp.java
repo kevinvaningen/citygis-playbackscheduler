@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * CityGis CSV pusher
  */
 public class ObservableDataApp {
-    BrokereableConnector connection;
+    Publishable connection;
     ObservablePlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
@@ -31,13 +31,14 @@ public class ObservableDataApp {
     public ObservableDataApp(FileMapping fileMapping){
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
-        connection = new BrokereableConnector();
+        connection = new MqttBrokerClientConnector();
         scheduler = new ObservablePlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }
 
     public void run(){
-        Observable<CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
+        Observable <CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
+
 
         System.out.println("Starting message scheduler.");
         scheduler.startPlayback( data );

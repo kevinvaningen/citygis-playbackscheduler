@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class MessagePlaybackSchedulerTest extends TestCase {
     MessageFileRetriever mr;
-    MessagePlaybackScheduler scheduler;
+    PlaybackScheduler scheduler;
     Stream<CityGisData> data;
     Publishable messageBroker;
     Calendar c;
@@ -48,8 +48,9 @@ public class MessagePlaybackSchedulerTest extends TestCase {
     }
 
     public void testScheduler() throws Exception {
-        scheduler = new MessagePlaybackScheduler(LocalDateTime.now());
-        scheduler.startPlayback(data, messageBroker);
+        scheduler = new PlaybackScheduler(LocalDateTime.now(), messageBroker);
+        scheduler.startPlayback(data);
+
         long firstReading = c.getTimeInMillis();;
         Thread.sleep(2000);
 

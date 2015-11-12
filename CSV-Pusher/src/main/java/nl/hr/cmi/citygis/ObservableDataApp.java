@@ -3,6 +3,7 @@ package nl.hr.cmi.citygis;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import org.apache.commons.cli.*;
+import rx.Observable;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * CityGis CSV pusher
  */
-public class App {
+public class ObservableDataApp {
     Publishable connection;
     PlaybackScheduler scheduler;
     MessageFileRetriever mr;
@@ -20,14 +21,14 @@ public class App {
     String path;
     FileMapping fileMapping;
 
-    public App(String file, String path, FileMapping fileMapping) {
+    public ObservableDataApp(String file, String path, FileMapping fileMapping) {
         this(fileMapping);
         this.file = file;
         this.path = path;
         this.fileMapping = fileMapping;
     }
 
-    public App(FileMapping fileMapping){
+    public ObservableDataApp(FileMapping fileMapping){
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
         connection = new MqttBrokerClientConnector();
@@ -35,9 +36,9 @@ public class App {
         mr = new MessageFileRetriever();
     }
 
-
     public void run(){
-        Stream<CityGisData> data = mr.getDataFromCSV(fileMapping);
+        Observable <CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
+
 
         System.out.println("Starting message scheduler.");
         scheduler.startPlayback( data );
@@ -63,7 +64,7 @@ public class App {
         String path             = line.getOptionValue("path");
         FileMapping fileMapping = FileMapping.valueOf(line.getOptionValue("type"));
 
-        App a = new App(file, path, fileMapping);
+        ObservableDataApp a = new ObservableDataApp(file, path, fileMapping);
         a.run();
     }
 

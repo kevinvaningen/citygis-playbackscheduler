@@ -32,7 +32,7 @@ public class ObservableDataApp {
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
         connection = new BrokereableConnector();
-        scheduler = new ObservablePlaybackScheduler(LocalDateTime.now());
+        scheduler = new ObservablePlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }
 

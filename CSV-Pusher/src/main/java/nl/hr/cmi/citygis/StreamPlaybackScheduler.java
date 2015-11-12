@@ -12,10 +12,13 @@ import java.util.stream.Stream;
  */
 public class StreamPlaybackScheduler extends PlaybackScheduler{
 
-    public StreamPlaybackScheduler(LocalDateTime time) {
-        super(time);
-    }
+//    public StreamPlaybackScheduler(LocalDateTime time) {
+//        super(time);
+//    }
 
+    public StreamPlaybackScheduler(LocalDateTime schedulerTime, Brokereable messageBroker) {
+        super(schedulerTime, messageBroker);
+    }
 
     public void startPlayback(Stream<CityGisData> data) {
         this.playeable = true; //TODO Is playable really needed?

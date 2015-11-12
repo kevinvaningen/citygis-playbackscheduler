@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
  */
 public class ObservablePlaybackScheduler extends PlaybackScheduler{
 
-    public ObservablePlaybackScheduler(LocalDateTime time) {
-        super(time);
+    public ObservablePlaybackScheduler(LocalDateTime schedulerTime, Brokereable messageBroker) {
+        super(schedulerTime, messageBroker);
     }
 
     public void startPlayback(Observable<CityGisData> data) {

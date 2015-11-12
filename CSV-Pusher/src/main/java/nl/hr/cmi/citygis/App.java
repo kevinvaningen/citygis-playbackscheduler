@@ -31,10 +31,9 @@ public class App {
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
         connection = new BrokereableConnector();
-        scheduler = new StreamPlaybackScheduler(LocalDateTime.now());
+        scheduler = new StreamPlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }
-
 
 
     public void run(){

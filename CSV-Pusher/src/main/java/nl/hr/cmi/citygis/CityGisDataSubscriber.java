@@ -11,9 +11,8 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
     ObservablePlaybackScheduler mps;
 
     CityGisDataSubscriber(LocalDateTime schedulerTime, Brokereable messageBroker){
-        mps = new ObservablePlaybackScheduler(schedulerTime);
+        mps = new ObservablePlaybackScheduler(schedulerTime, messageBroker);
     }
-
 
     @Override
     public void onCompleted(){

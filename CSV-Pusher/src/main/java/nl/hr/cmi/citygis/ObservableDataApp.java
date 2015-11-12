@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  */
 public class ObservableDataApp {
     Publishable connection;
-    ObservablePlaybackScheduler scheduler;
+    PlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
     String file;
@@ -32,7 +32,7 @@ public class ObservableDataApp {
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
         connection = new MqttBrokerClientConnector();
-        scheduler = new ObservablePlaybackScheduler(LocalDateTime.now(), connection);
+        scheduler = new PlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }
 

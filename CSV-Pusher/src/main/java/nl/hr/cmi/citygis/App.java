@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  */
 public class App {
     Publishable connection;
-    StreamPlaybackScheduler scheduler;
+    PlaybackScheduler scheduler;
     MessageFileRetriever mr;
 
     String file;
@@ -31,7 +31,7 @@ public class App {
         System.out.println("Started" + App.class.getSimpleName()+ " started. ");
 
         connection = new MqttBrokerClientConnector();
-        scheduler = new StreamPlaybackScheduler(LocalDateTime.now(), connection);
+        scheduler = new PlaybackScheduler(LocalDateTime.now(), connection);
         mr = new MessageFileRetriever();
     }
 

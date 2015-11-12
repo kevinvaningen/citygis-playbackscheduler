@@ -1,6 +1,7 @@
 package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.models.CityGisData;
+import rx.Observable;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Created by youritjang on 11-11-15.
  */
-public abstract class PlaybackScheduler {
+public class PlaybackScheduler {
     LocalDateTime schedulerTime;
     LocalDateTime fileStartTime;
 
@@ -100,6 +101,28 @@ public abstract class PlaybackScheduler {
 
     public long getTimeToNextMessage() {
         return this.timeToNextMessage;
+    }
+
+    public void startPlayback(Observable<CityGisData> data) {
+        this.playeable = true; //TODO Is playable really needed?
+
+        data.subscribe(new CityGisDataSubscriber<CityGisData>(schedulerTime, messageBroker));
+//        data.forEach(entry -> {
+//            while(playeable) {
+//                sendOrWait(entry);
+//            }
+//        });
+    }
+
+
+    public void startPlayback(Stream<CityGisData> data) {
+        this.playeable = true; //TODO Is playable really needed?
+
+        data.forEach(entry -> {
+            while(playeable) {
+                sendOrWait(entry);
+            }
+        });
     }
 
 }

@@ -58,9 +58,9 @@ class ConfigurationPropertyValues {
     public Properties getDefaultProperties(){
         Properties prop = new Properties();
         prop.setProperty("CSV_FILE_EVENTS","Events.csv");
-        prop.setProperty("CSV_FILE_POSITIONS","Positions.csv");
-        prop.setProperty("CSV_FILE_MONITORING","Monitoring.csv");
-        prop.setProperty("CSV_FILE_CONNECTIONS","Connections.csv");
+        prop.setProperty("CSV_FILE_POSITIONS", "Positions.csv");
+        prop.setProperty("CSV_FILE_MONITORING", "Monitoring.csv");
+        prop.setProperty("CSV_FILE_CONNECTIONS", "Connections.csv");
 
         prop.setProperty("MQTT_BROKER_URL","tcp://localhost:1883");
         prop.setProperty("MQTT_BROKER_USERNAME","=dqpjlyct");

@@ -5,34 +5,35 @@ import junit.framework.TestCase;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 /**
  * Created by cmi on 09-11-15.
  */
 public class CsvConverterTest extends TestCase {
-
-    MessageFileRetriever mr;
-    FileMapping fileMapping;
     CsvConverter csvc;
 
     public void setUp() throws Exception {
         super.setUp();
-        mr = new MessageFileRetriever();
-        fileMapping = FileMapping.EVENTS;
-
-        csvc = new CsvConverter(fileMapping);
-        csvc.setPath("test/resources/");
+        csvc = new CsvConverter("resources/", FileMapping.EVENTS);
     }
 
     public void testCsvFileRetrieval() throws Exception {
-        Stream<CityGisData> data = mr.getDataFromCSV("resources/", fileMapping);
+        Stream<CityGisData> data = csvc.getData();
         Assert.assertTrue(data.count() > 0);
     }
 
     public void testCsvDataCheckFirstDataElement() throws Exception {
-        Stream<CityGisData> data = mr.getDataFromCSV("resources/", fileMapping);
+        Stream<CityGisData> data = csvc.getData();
         Assert.assertNotNull(data.findFirst().get());
+    }
 
+    public void testGetFileStartTime(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime expectedFileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter);
+        LocalDateTime providedFileStartTime = csvc.getFileStartTime();
+        assertEquals(expectedFileStartTime, providedFileStartTime);
     }
 }

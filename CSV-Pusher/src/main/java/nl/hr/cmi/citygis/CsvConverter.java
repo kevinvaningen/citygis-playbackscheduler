@@ -3,6 +3,8 @@ package nl.hr.cmi.citygis;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import nl.hr.cmi.citygis.models.iCityGisModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +15,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 
@@ -23,7 +24,8 @@ public class CsvConverter {
     private Stream<CityGisData> data;
     private Supplier<iCityGisModel> supplier;
 
-    private final static Logger LOGGER = Logger.getLogger(App.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(CsvConverter.class);
+
 
     public CsvConverter(String path, FileMapping fileMapping) {
         this.path = path;
@@ -57,7 +59,7 @@ public class CsvConverter {
 
             breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
         }catch(IOException exception){
-            LOGGER.severe("Error occurred while trying to read the file: " + exception);
+            LOGGER.error("Error occurred while trying to read the file: " + exception);
             System.exit(0);
         }
 

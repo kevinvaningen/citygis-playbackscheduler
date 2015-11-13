@@ -1,12 +1,14 @@
 package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.configuration.CliBuilder;
-import org.apache.commons.cli.CommandLine;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
+import org.apache.commons.cli.CommandLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
+
 import java.util.stream.Stream;
-import java.util.logging.Logger;
 /**
  * CityGis CSV pusher
  */
@@ -20,12 +22,11 @@ public class App {
     FileMapping fileMapping;
     boolean usingRxJava;
 
-    private final static Logger LOGGER = Logger.getLogger(App.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public App(String file, String path, FileMapping fileMapping, boolean usingRxJava) {
-        System.out.println("Started: " + App.class.getSimpleName());
-
-        LOGGER.info("Hello World");
+        System.out.println("Started logging on console: " + App.class.getSimpleName());
+        LOGGER.info("Started logging" + App.class.getSimpleName());
 
         this.file = file;
         this.path = path;

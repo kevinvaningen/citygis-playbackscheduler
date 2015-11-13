@@ -7,6 +7,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by cmi on 09-11-15.
@@ -18,21 +20,23 @@ public class MqttBrokerClientConnector implements Publishable {
     private int qos;
     private String broker;
     private String clientId;
+    private final static Logger LOGGER = LoggerFactory.getLogger(MqttBrokerClientConnector.class);
+
 
     public MqttBrokerClientConnector(){
-        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ ", defaulting to config.properties configuration.");
+        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + ", defaulting to config.properties configuration.");
         ConfigurationReader configurationReader = new ConfigurationReader();
         BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
         setConnectionProperties(brokerConfiguration);
         }
 
     public MqttBrokerClientConnector(BrokerConfiguration brokerConfiguration){
-        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ " using broker argument configuration.");
+        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + " using broker argument configuration.");
         setConnectionProperties(brokerConfiguration);
     }
 
     public MqttBrokerClientConnector(String brokerUrl, String clientId, int qos, BrokerConfiguration brokerConfiguration) {
-        System.out.println("Setting up "+MqttBrokerClientConnector.class.getSimpleName()+ " using argument configuration.");
+        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + " using argument configuration.");
         this.broker = brokerUrl;
         this.clientId = clientId;
         this.qos = qos;
@@ -56,15 +60,11 @@ public class MqttBrokerClientConnector implements Publishable {
         try {
             //TDOO create configuration file for message broker settings
             mqttConnectedClient = new MqttClient(broker, clientId, persistence);
-            System.out.println("Connecting to broker: " + broker);
+            LOGGER.info("Connecting to broker: " + broker);
             mqttConnectedClient.connect(connectionOptions);
-            System.out.println("Connected");
+            LOGGER.info("Connected to broker at:" + mqttConnectedClient.getServerURI());
         } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
+            printException(me);
             me.printStackTrace();
         }
     }
@@ -79,13 +79,9 @@ public class MqttBrokerClientConnector implements Publishable {
     public void disconnectFromBroker(){
         try {
             mqttConnectedClient.disconnect();
-            System.out.println("Disconnected");
+            LOGGER.debug("Disconnected");
         } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
+            printException(me);
             me.printStackTrace();
         }
     }
@@ -103,11 +99,7 @@ public class MqttBrokerClientConnector implements Publishable {
                 System.out.println("Message published");
                 return true;
             } catch (MqttException me) {
-                System.out.println("reason " + me.getReasonCode());
-                System.out.println("msg " + me.getMessage());
-                System.out.println("loc " + me.getLocalizedMessage());
-                System.out.println("cause " + me.getCause());
-                System.out.println("excep " + me);
+                printException(me);
                 me.printStackTrace();
             }
         }
@@ -116,5 +108,13 @@ public class MqttBrokerClientConnector implements Publishable {
             publish(topic,message);
         }
         return false;
+    }
+
+    private void printException(MqttException me) {
+        LOGGER.error("reason " + me.getReasonCode() +
+                " msg " + me.getMessage() +
+                " loc " + me.getLocalizedMessage() +
+                " cause " + me.getCause() +
+                " excep " + me.toString());
     }
 }

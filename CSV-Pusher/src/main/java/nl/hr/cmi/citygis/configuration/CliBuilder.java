@@ -1,11 +1,14 @@
 package nl.hr.cmi.citygis.configuration;
 
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by youritjang on 12-11-15.
  */
 public class CliBuilder {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CliBuilder.class);
 
 
     public static CommandLine parse(String[] args){
@@ -18,7 +21,7 @@ public class CliBuilder {
         try {
             line = parser.parse(options, args);
         } catch (ParseException ex) {
-            System.err.println("Parsing failed.  Reason: " + ex.getMessage());
+            LOGGER.error("Parsing failed.  Reason: " + ex.getMessage());
             System.exit(1);
         }
 

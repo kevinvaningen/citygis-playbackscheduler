@@ -1,6 +1,8 @@
 package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.models.CityGisData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ public class PlaybackScheduler {
     Publishable messageBroker;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final static Logger LOGGER = LoggerFactory.getLogger(PlaybackScheduler.class);
 
 
     public PlaybackScheduler(LocalDateTime fileStartTime, Publishable messageBroker) {
@@ -35,13 +38,13 @@ public class PlaybackScheduler {
 
         if ( waitTime > 0) {
             try {
-                System.out.println(String.format("Waiting for %d seconds", timeToNextMessage));
+                LOGGER.debug(String.format("Waiting for %d seconds", timeToNextMessage));
                 Thread.sleep(Math.max(1, timeToNextMessage * 1000));
             }catch (InterruptedException ie){
                 System.err.println(ie);
             }
         }
-        System.out.println(entry.toJSON());
+        LOGGER.debug(entry.toJSON());
         messageBroker.publish("events",entry.toJSON());
     }
 

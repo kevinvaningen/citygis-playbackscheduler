@@ -1,6 +1,8 @@
 package nl.hr.cmi.citygis.configuration;
 
 
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,26 +32,29 @@ public class ConfigurationReader {
 
 
 class ConfigurationPropertyValues {
+
+    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ConfigurationPropertyValues.class);
+
     InputStream inputStream;
+    public static final String PROPERTY_FILE_FILE_NAME = "config.properties";
 
     public Properties getPropValues() throws IOException {
         Properties prop = new Properties();
 
         try {
-            String propFileName = "config.properties";
 
-            inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+            inputStream = getClass().getClassLoader().getResourceAsStream(PROPERTY_FILE_FILE_NAME);
 
             if (inputStream != null) {
                 prop.load(inputStream);
             } else {
-                throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+                throw new FileNotFoundException("property file '" + PROPERTY_FILE_FILE_NAME + "' not found in the classpath");
             }
 
             return prop;
 
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            LOGGER.error("Exception: " + e);
         } finally {
             inputStream.close();
             return prop;

@@ -113,26 +113,6 @@ public class Position extends CityGisPoint{
         this.quality = quality;
     }
 
-    @Deprecated
-    public enum GpsQuality{
-        Gps("Gps"),
-        dGps("dGps"),
-        Fix3D("Fix3D"),
-        Fix3DDGPS("Fix3D+DGPS"),
-        DrOnly("DrOnly"),
-        GpsAndDr("GpsAndDr"),
-        GpsAndDrDGPS("GpsAndDr+DGPS"),
-        Fix2D("Fix2D"),
-        Fix2DDGPS("Fix2D+DGPS"),
-        DrOnlyDGPS("DrOnly+DGPS"),
-        Dr("Dr");
-
-        private final String name;
-
-        private GpsQuality(String s) {
-            name = s;
-        }
-    }
 
     @Override
     public String toString() {

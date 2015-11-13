@@ -1,5 +1,6 @@
 package nl.hr.cmi.citygis.models;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

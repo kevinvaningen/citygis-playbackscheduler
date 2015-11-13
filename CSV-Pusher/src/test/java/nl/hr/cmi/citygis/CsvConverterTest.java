@@ -17,12 +17,11 @@ public class CsvConverterTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        csvc = new CsvConverter("resources/", FileMapping.EVENTS);
+        csvc = new CsvConverter("", FileMapping.EVENTS);
     }
 
     public void testCsvFileRetrieval() throws Exception {
-        Stream<CityGisData> data = csvc.getData();
-        Assert.assertTrue(data.count() > 0);
+        Assert.assertTrue(csvc.getData().findFirst() != null);
     }
 
     public void testCsvDataCheckFirstDataElement() throws Exception {

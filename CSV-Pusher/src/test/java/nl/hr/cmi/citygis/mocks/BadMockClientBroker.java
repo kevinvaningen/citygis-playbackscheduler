@@ -9,7 +9,7 @@ public class BadMockClientBroker implements Publishable {
     @Override
     public boolean publish(String topic, String message) {
         System.out.println("Did not publish");
-        return true;
+        return false;
     }
 
     @Override

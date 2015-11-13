@@ -35,6 +35,7 @@ public class App {
 
         connection = new MqttBrokerClientConnector();
         csvc       = new CsvConverter(path, fileMapping);
+
         scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection);
     }
 

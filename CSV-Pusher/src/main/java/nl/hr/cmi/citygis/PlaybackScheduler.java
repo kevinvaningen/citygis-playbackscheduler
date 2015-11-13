@@ -21,35 +21,13 @@ public class PlaybackScheduler {
     Publishable messageBroker;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    /**
-     *  @deprecated set the messagebroker
-     */
-    @Deprecated
-    public  PlaybackScheduler(){
-        LocalDateTime start = LocalDateTime.now();
-        System.out.println("Created scheduler using System time now:" + start.toString());
-    }
 
-    /**
-     *  @deprecated set the messagebroker
-     */
-    @Deprecated
-    public  PlaybackScheduler(LocalDateTime time){
-        schedulerTime = time;
-        fileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter);
-        System.out.println("Created scheduler using inputted time:" + schedulerTime.toString());
-    }
 
-    public PlaybackScheduler(LocalDateTime schedulerTime, Publishable messageBroker) {
-        this.schedulerTime = schedulerTime;
+    public PlaybackScheduler(LocalDateTime fileStartTime, Publishable messageBroker) {
         this.messageBroker = messageBroker;
-        fileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter); //// TODO: 12-11-15 up up and away
+        this.schedulerTime = LocalDateTime.now();
+        this.fileStartTime = fileStartTime;
     }
-
-    public void setMessageBroker(Publishable messageBroker) {
-        this.messageBroker = messageBroker;
-    }
-
 
 
     protected void sendOrWait(CityGisData entry) {
@@ -68,31 +46,15 @@ public class PlaybackScheduler {
     }
 
     private long getWaitTimeForEntry(CityGisData entry) {
-        LocalDateTime now = LocalDateTime.now();
-        long fileTimePast = fileStartTime.until(entry.getDateTime(), ChronoUnit.SECONDS);
-        long realTimePast = schedulerTime.until(now, ChronoUnit.SECONDS);
+        LocalDateTime now   = LocalDateTime.now();
+        long realTimePast   = schedulerTime.until(now, ChronoUnit.SECONDS);
+
+        long fileTimePast   = fileStartTime.until(entry.getDateTime(), ChronoUnit.SECONDS);
         long timeDifference = fileTimePast - realTimePast;
 
         return timeDifference;
     }
 
-    @Deprecated
-    private boolean sendOrWait(Publishable messageBroker, CityGisData entry, boolean sent, long timeDifference) {
-        if (timeDifference <= 0) {
-            System.out.println(entry.toJSON());
-
-            messageBroker.publish("events",entry.toJSON());
-            sent = true;
-        } else {
-            try {
-                System.out.println(String.format("Waiting for %d seconds", timeToNextMessage));
-                Thread.sleep(timeToNextMessage * 1000);
-            }catch (InterruptedException ie){
-                System.err.println(ie);
-            }
-        }
-        return sent;
-    }
 
     public void stopPlayback(){
         this.playeable = false;
@@ -101,17 +63,6 @@ public class PlaybackScheduler {
 
     public long getTimeToNextMessage() {
         return this.timeToNextMessage;
-    }
-
-    public void startPlayback(Observable<CityGisData> data) {
-        this.playeable = true; //TODO Is playable really needed?
-
-        data.subscribe(new CityGisDataSubscriber<CityGisData>(schedulerTime, messageBroker));
-//        data.forEach(entry -> {
-//            while(playeable) {
-//                sendOrWait(entry);
-//            }
-//        });
     }
 
 
@@ -123,6 +74,12 @@ public class PlaybackScheduler {
                 sendOrWait(entry);
             }
         });
+    }
+
+
+    public void startPlayback(Observable<CityGisData> data) {
+        this.playeable = true; //TODO Is playable really needed?
+        data.subscribe(new CityGisDataSubscriber<>(schedulerTime, messageBroker));
     }
 
 }

@@ -1,54 +1,16 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.configuration;
 
-import nl.hr.cmi.citygis.models.CityGisData;
-import nl.hr.cmi.citygis.models.FileMapping;
 import org.apache.commons.cli.*;
-import rx.Observable;
-
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
-
 
 /**
- * CityGis CSV pusher
+ * Created by youritjang on 12-11-15.
  */
-public class ObservableDataApp {
-    Publishable connection;
-    PlaybackScheduler scheduler;
-    MessageFileRetriever mr;
-
-    String file;
-    String path;
-    FileMapping fileMapping;
-
-    public ObservableDataApp(String file, String path, FileMapping fileMapping) {
-        this(fileMapping);
-        this.file = file;
-        this.path = path;
-        this.fileMapping = fileMapping;
-    }
-
-    public ObservableDataApp(FileMapping fileMapping){
-        System.out.println("Started" + App.class.getSimpleName()+ " started. ");
-
-        connection = new MqttBrokerClientConnector();
-        scheduler = new PlaybackScheduler(LocalDateTime.now(), connection);
-        mr = new MessageFileRetriever();
-    }
-
-    public void run(){
-        Observable <CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
+public class CliBuilder {
 
 
-        System.out.println("Starting message scheduler.");
-        scheduler.startPlayback( data );
-    }
-
-
-    public static void main(String[] args){
+    public static CommandLine parse(String[] args){
         Options options = createOptions();
         showHelpMessage(args, options);
-
 
         CommandLineParser parser = new DefaultParser();
         CommandLine line = null;
@@ -60,23 +22,21 @@ public class ObservableDataApp {
             System.exit(1);
         }
 
-        String file             = line.getOptionValue("file");
-        String path             = line.getOptionValue("path");
-        FileMapping fileMapping = FileMapping.valueOf(line.getOptionValue("type"));
-
-        ObservableDataApp a = new ObservableDataApp(file, path, fileMapping);
-        a.run();
+        return line;
     }
+
 
     private static Options createOptions(){
         Option ofile = Option.builder("f").argName("file").longOpt("file").required().hasArg().desc("The csv data file name").build();
         Option opath = Option.builder("p").argName("path").longOpt("path").hasArg().desc("The path, default is the source root.").build();
         Option otype = Option.builder("t").argName("type").longOpt("type").required().hasArg().desc("Here you can set the file type <CONNECTIONS || EVENTS || MONITORING || POSITIONS>.").build();
+        Option rtype = Option.builder("rx").argName("rx").longOpt("rx").desc("Want to use RXJava with observable?").build();
 
         Options options = new Options();
         options.addOption(ofile);
         options.addOption(opath);
         options.addOption(otype);
+        options.addOption(rtype);
 
         return options;
     }

@@ -3,12 +3,14 @@ package nl.hr.cmi.citygis;
 import rx.Subscriber;
 import nl.hr.cmi.citygis.models.CityGisData;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  * Created by youritjang on 11-11-15.
  */
 public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<CityGisData> {
     PlaybackScheduler mps;
+    private final static Logger LOGGER = Logger.getLogger(CityGisDataSubscriber.class.getName());
 
     CityGisDataSubscriber(LocalDateTime schedulerTime, Publishable messageBroker){
         mps = new PlaybackScheduler(schedulerTime, messageBroker);
@@ -21,11 +23,12 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
 
     @Override
     public void onNext(CityGisData cgd){
-         mps.sendOrWait(cgd);
+        LOGGER.finer(cgd.toString());
+        mps.sendOrWait(cgd);
     }
 
     @Override
     public void onError(Throwable e){
-        System.err.println("Error: " + e);
+        LOGGER.severe("Error: " + e);
     }
 }

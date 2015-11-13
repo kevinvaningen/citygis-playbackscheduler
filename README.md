@@ -8,3 +8,8 @@ We are planning to use a Dockerised version for dev purposes in the near future.
 
 #Mosquitto in docker
     https://github.com/toke/docker-mosquitto
+
+#Dockerize build
+    docker build -t citygis/pusher .
+    
+    docker run -d citygis/pusher

@@ -1,12 +1,8 @@
 package nl.hr.cmi.citygis;
 
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import java.util.Date;
-import java.util.Calendar;
 
 /**
  * Created by cmi on 10-11-15.

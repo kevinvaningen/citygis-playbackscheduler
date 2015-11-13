@@ -37,7 +37,7 @@ public class ObservableDataApp {
     }
 
     public void run(){
-        Observable <CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
+        Observable<CityGisData> data = mr.getObservableDataFromCSV("", fileMapping);
 
 
         System.out.println("Starting message scheduler.");

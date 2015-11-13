@@ -49,7 +49,7 @@ public class MessagePlaybackSchedulerTest extends TestCase {
 
     public void testScheduler() throws Exception {
         scheduler = new PlaybackScheduler(LocalDateTime.now(), messageBroker);
-        scheduler.startPlayback(data);
+        //scheduler.startPlayback(data);
 
         long firstReading = c.getTimeInMillis();;
         Thread.sleep(2000);

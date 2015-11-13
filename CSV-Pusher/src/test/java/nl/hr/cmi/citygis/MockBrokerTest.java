@@ -5,6 +5,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
+import nl.hr.cmi.citygis.mocks.BadMockClientBroker;
 import nl.hr.cmi.citygis.mocks.MockClientBroker;
 
 import java.util.Calendar;
@@ -46,6 +47,12 @@ public class MockBrokerTest extends TestCase {
         bc.connect();
         Assert.assertTrue(bc.isConnectedToServer());
         bc.disconnectFromBroker();
+    }
+
+    public void testBadBrokerage() throws Exception {
+        Publishable badBroker = new BadMockClientBroker();
+
+        Assert.assertFalse(badBroker.publish("testTopic","Hi ALl!"));
     }
 
     public void testSendOneMessage(){

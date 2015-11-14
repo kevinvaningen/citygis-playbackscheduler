@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 /**
  * CityGis CSV pusher
@@ -27,6 +28,7 @@ public class App {
     public App(String file, String path, FileMapping fileMapping, boolean usingRxJava) {
         System.out.println("Started logging on console: " + App.class.getSimpleName());
         LOGGER.info("Started logging" + App.class.getSimpleName());
+        LOGGER.info(String.format("With parameter: path: %s , file: %s ,  filetype: %s , rx: %s", path, file, fileMapping.name(), usingRxJava));
 
         this.file = file;
         this.path = path;
@@ -36,17 +38,13 @@ public class App {
         connection = new MqttBrokerClientConnector();
         csvc       = new CsvConverter(path, fileMapping);
 
-        scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection);
+        scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileMapping);
     }
 
     public void run(){
         Stream<CityGisData> data = csvc.getData();
 
-        if (!usingRxJava) {
-            scheduler.startPlayback(data);
-        }else{
-            scheduler.startPlayback(Observable.from(data::iterator));
-        }
+        scheduler.startPlayback(data);
     }
 
     public static void main(String[] args){

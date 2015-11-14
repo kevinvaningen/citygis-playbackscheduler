@@ -5,6 +5,7 @@ package nl.hr.cmi.citygis;
  */
 public interface Publishable {
 
+
     public boolean publish(String topic, String message);
     public void disconnectFromBroker();
     public boolean isConnectedToServer();

@@ -60,10 +60,11 @@ public class MqttBrokerClientConnector implements Publishable {
         try {
             //TDOO create configuration file for message broker settings
             mqttConnectedClient = new MqttClient(broker, clientId, persistence);
-            LOGGER.info("Connecting to broker: " + broker);
             mqttConnectedClient.connect(connectionOptions);
             LOGGER.info("Connected to broker at:" + mqttConnectedClient.getServerURI());
         } catch (MqttException me) {
+            LOGGER.error("Failed to connect to broker" + broker + " at " + mqttConnectedClient.getServerURI());
+
             printException(me);
             me.printStackTrace();
         }
@@ -79,7 +80,7 @@ public class MqttBrokerClientConnector implements Publishable {
     public void disconnectFromBroker(){
         try {
             mqttConnectedClient.disconnect();
-            LOGGER.debug("Disconnected");
+            LOGGER.debug("Broker disconnected from:");
         } catch (MqttException me) {
             printException(me);
             me.printStackTrace();

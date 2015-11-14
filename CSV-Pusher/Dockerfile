@@ -16,10 +16,10 @@ RUN ["mvn", "-Dmaven.test.skip=true", "package"]
 
 
 ADD Events.csv /code/Events.csv
+ADD Monitoring.csv /code/Monitoring.csv
 
 #THIS IS NOT WORKING
 ADD ./docker-script.sh /code/docker-script.sh
 RUN ["chmod", "+x", "/code/docker-script.sh"]
-#RUN ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/pusher-1.0-SNAPSHOT-jar-with-dependencies.jar", "-p .","-f Events.csv","-t EVENTS","&"]
 
-ENTRYPOINT ["/code/docker-script.sh"]
+ENTRYPOINT ["/code/docker-script.sh", "-bash"]

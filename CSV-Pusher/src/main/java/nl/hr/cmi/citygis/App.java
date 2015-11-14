@@ -42,7 +42,7 @@ public class App {
     public void run(){
         Stream<CityGisData> data = csvc.getData();
 
-        if(usingRxJava) {
+        if (!usingRxJava) {
             scheduler.startPlayback(data);
         }else{
             scheduler.startPlayback(Observable.from(data::iterator));

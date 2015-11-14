@@ -6,9 +6,7 @@ import nl.hr.cmi.citygis.models.FileMapping;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
 
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 /**
  * CityGis CSV pusher
@@ -38,7 +36,7 @@ public class App {
         connection = new MqttBrokerClientConnector();
         csvc       = new CsvConverter(path, fileMapping);
 
-        scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileMapping);
+        scheduler = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileMapping);
     }
 
     public void run(){

@@ -32,5 +32,6 @@ public class BrokerConfiguration {
     public boolean usesCredentials(){
         return getBrokerPassword().map(s -> !s.equals("")).orElse(false);
     }
+
 }
 

@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
  * Created by youritjang on 09-11-15.
  */
 public abstract class CityGisData implements iCityGisModel{
-    transient Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    transient Gson gson = new GsonBuilder().create();
     public String toJSON(){
         return gson.toJson(this);
     }

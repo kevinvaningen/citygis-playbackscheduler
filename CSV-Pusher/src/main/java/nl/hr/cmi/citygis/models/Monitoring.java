@@ -123,4 +123,19 @@ public class Monitoring extends CityGisData{
     public void setSum(String sum) {
         this.sum = Double.parseDouble(sum);
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Monitoring{");
+        sb.append("unitId='").append(unitId).append('\'');
+        sb.append(", beginTime=").append(beginTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", min=").append(min);
+        sb.append(", max=").append(max);
+        sb.append(", sum=").append(sum);
+        sb.append('}');
+        return sb.toString();
+    }
 }

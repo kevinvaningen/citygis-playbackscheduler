@@ -1,5 +1,6 @@
 package nl.hr.cmi.citygis.configuration;
 
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -18,8 +19,9 @@ public class BrokerConfiguration {
     public String getBrokerUsername(){
         return (String)props.get("MQTT_BROKER_USERNAME");
     }
-    public String getBrokerPassword(){
-        return (String)props.get("MQTT_BROKER_PASSWORKD");
+
+    public Optional<String> getBrokerPassword() {
+        return Optional.ofNullable((String) (props.get("MQTT_BROKER_PASSWORKD")));
     }
     public int getBrokerQos(){
         return Integer.parseInt((String)props.get("MQTT_QOS"));
@@ -28,11 +30,7 @@ public class BrokerConfiguration {
         return (String) props.get("MQTT_CLIENT_ID");
     }
     public boolean usesCredentials(){
-        if(getBrokerPassword()==null || getBrokerPassword().trim().equals("")){
-            return false;
-        }else{
-            return true;
-        }
+        return getBrokerPassword().map(s -> !s.equals("")).orElse(false);
     }
 }
 

@@ -42,7 +42,7 @@ public class MqttBrokerClientConnector implements Publishable {
         connectionOptions.setCleanSession(true);
         if (brokerConfiguration.usesCredentials()) {
             connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
-            connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
+            connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().get().toCharArray());
         }
     }
 

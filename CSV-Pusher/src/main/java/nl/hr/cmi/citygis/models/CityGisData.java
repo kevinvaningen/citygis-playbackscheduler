@@ -12,4 +12,6 @@ public abstract class CityGisData implements iCityGisModel{
     public String toJSON(){
         return gson.toJson(this);
     }
+
+
 }

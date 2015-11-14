@@ -20,8 +20,13 @@ public class App {
     String path;
     FileMapping fileMapping;
     boolean usingRxJava;
+    Stream<CityGisData> data;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
+
+    public void run() {
+        scheduler.startPlayback(data);
+    }
 
     public App(String file, String path, FileMapping fileMapping, boolean usingRxJava) {
         System.out.println("Started logging on console: " + App.class.getSimpleName());
@@ -37,12 +42,7 @@ public class App {
         csvc       = new CsvConverter(path, fileMapping);
 
         scheduler = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileMapping);
-    }
-
-    public void run(){
-        Stream<CityGisData> data = csvc.getData();
-
-        scheduler.startPlayback(data);
+        data = csvc.getData();
     }
 
     public static void main(String[] args){

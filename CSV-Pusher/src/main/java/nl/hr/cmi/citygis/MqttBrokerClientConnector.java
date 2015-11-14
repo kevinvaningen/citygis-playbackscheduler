@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
  * Created by cmi on 09-11-15.
  */
 public class MqttBrokerClientConnector implements Publishable {
-    MqttClient mqttConnectedClient;
-    MqttConnectOptions connectionOptions = new MqttConnectOptions();
+    private MqttClient mqttConnectedClient;
+    private MqttConnectOptions connectionOptions = new MqttConnectOptions();
 
     private int qos;
     private String broker;
@@ -23,39 +23,30 @@ public class MqttBrokerClientConnector implements Publishable {
     private final static Logger LOGGER = LoggerFactory.getLogger(MqttBrokerClientConnector.class);
 
 
-    public MqttBrokerClientConnector(){
+    public MqttBrokerClientConnector() {
         LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + ", defaulting to config.properties configuration.");
         ConfigurationReader configurationReader = new ConfigurationReader();
         BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
         setConnectionProperties(brokerConfiguration);
-        }
+    }
 
-    public MqttBrokerClientConnector(BrokerConfiguration brokerConfiguration){
+    public MqttBrokerClientConnector(BrokerConfiguration brokerConfiguration) {
         LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + " using broker argument configuration.");
         setConnectionProperties(brokerConfiguration);
     }
 
-    public MqttBrokerClientConnector(String brokerUrl, String clientId, int qos, BrokerConfiguration brokerConfiguration) {
-        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + " using argument configuration.");
-        this.broker = brokerUrl;
-        this.clientId = clientId;
-        this.qos = qos;
-        connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
-        connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
-
-    }
-    private void setConnectionProperties(BrokerConfiguration brokerConfiguration){
+    private void setConnectionProperties(BrokerConfiguration brokerConfiguration) {
         this.qos = brokerConfiguration.getBrokerQos();
         this.broker = brokerConfiguration.getBrokerUrl();
         this.clientId = brokerConfiguration.getClientId();
         connectionOptions.setCleanSession(true);
-        if(brokerConfiguration.usesCredentials()) {
+        if (brokerConfiguration.usesCredentials()) {
             connectionOptions.setUserName(brokerConfiguration.getBrokerUsername());
             connectionOptions.setPassword(brokerConfiguration.getBrokerPassword().toCharArray());
         }
     }
 
-    public void connect(){
+    public void connect() {
         MemoryPersistence persistence = new MemoryPersistence();
         try {
             //TDOO create configuration file for message broker settings
@@ -70,14 +61,14 @@ public class MqttBrokerClientConnector implements Publishable {
         }
     }
 
-    public boolean isConnectedToServer(){
-        if(mqttConnectedClient== null){
+    public boolean isConnectedToServer() {
+        if (mqttConnectedClient == null) {
             return false;
         }
         return mqttConnectedClient.isConnected();
     }
 
-    public void disconnectFromBroker(){
+    public void disconnectFromBroker() {
         try {
             mqttConnectedClient.disconnect();
             LOGGER.debug("Broker disconnected from:");
@@ -89,7 +80,7 @@ public class MqttBrokerClientConnector implements Publishable {
 
     @Override
     public boolean publish(String topic, String message) {
-        if(isConnectedToServer()) {
+        if (isConnectedToServer()) {
             try {
                 LOGGER.debug("Publishing message: " + message);
                 MqttMessage Mqttmessage = new MqttMessage(message.getBytes());
@@ -102,10 +93,9 @@ public class MqttBrokerClientConnector implements Publishable {
                 printException(me);
                 me.printStackTrace();
             }
-        }
-        else{
+        } else {
             connect();
-            publish(topic,message);
+            publish(topic, message);
         }
         return false;
     }

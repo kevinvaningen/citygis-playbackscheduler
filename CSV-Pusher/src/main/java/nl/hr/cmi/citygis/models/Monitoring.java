@@ -70,6 +70,11 @@ public class Monitoring extends CityGisData{
         return this.endTime;
     }
 
+    public void setDateTime(LocalDateTime dateTime) {
+        this.endTime = dateTime;
+    }
+
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }

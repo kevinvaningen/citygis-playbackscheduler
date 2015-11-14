@@ -81,7 +81,7 @@ public class PlaybackScheduler {
         PublishSubject<CityGisData> subject = PublishSubject.create();
         subject.subscribe(cs);
         data.forEach(cityGisData1 -> {
-            if (cityGisData1){
+//            if (cityGisData1){
                     long waitTime = getWaitTimeForEntry(cityGisData1);
                 try {
                     LOGGER.debug("Waiting: " + waitTime);
@@ -90,7 +90,7 @@ public class PlaybackScheduler {
                     LOGGER.error(ie.getMessage());
                 }
                 subject.onNext(cityGisData1);
-            }
+//            }
         });
 
 //        Observable<CityGisData> postelay =

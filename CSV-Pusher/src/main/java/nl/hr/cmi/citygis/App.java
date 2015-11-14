@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 /**
  * CityGis CSV pusher
@@ -43,9 +44,7 @@ public class App {
     public void run(){
         Stream<CityGisData> data = csvc.getData();
 
-        Observable obs = scheduler.startPlayback(data);
-
-
+        scheduler.startPlayback(data);
     }
 
     public static void main(String[] args){

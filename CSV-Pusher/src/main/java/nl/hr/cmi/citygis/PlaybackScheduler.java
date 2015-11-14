@@ -5,6 +5,9 @@ import nl.hr.cmi.citygis.models.FileMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
+import rx.observables.ConnectableObservable;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -74,18 +77,28 @@ public class PlaybackScheduler {
     public void startPlayback(Stream<CityGisData> data) {
         this.playeable = true; //TODO Is playable really needed?
 
-//        data.forEach(entry -> {
-//            while(playeable) {
-//                sendOrWait(entry);
-//            }
-//        });
+        CityGisDataSubscriber cs = new CityGisDataSubscriber(messageBroker, fileMapping);
+        PublishSubject<CityGisData> subject = PublishSubject.create();
+        subject.subscribe(cs);
+        data.forEach(cityGisData1 -> {
+            if (cityGisData1){
+                    long waitTime = getWaitTimeForEntry(cityGisData1);
+                try {
+                    LOGGER.debug("Waiting: " + waitTime);
+                    Thread.sleep(waitTime * 1000);
+                } catch (InterruptedException ie) {
+                    LOGGER.error(ie.getMessage());
+                }
+                subject.onNext(cityGisData1);
+            }
+        });
 
-//        Observable<CityGisData> predelay = Observable.from(data::iterator);
-//        Observable.del
 //        Observable<CityGisData> postelay =
 
     }
-
+//    private LocalDateTime getWeekdayAndTime(CityGisData cd){
+//        return cd.getDateTime().
+//    }
 
     public void startPlayback(Observable<CityGisData> data) {
         this.playeable = true; //TODO Is playable really needed?

@@ -27,6 +27,7 @@ public class App {
     public App(String file, String path, FileMapping fileMapping, boolean usingRxJava) {
         System.out.println("Started logging on console: " + App.class.getSimpleName());
         LOGGER.info("Started logging" + App.class.getSimpleName());
+        LOGGER.info(String.format("With parameter: path: %s , file: %s ,  filetype: %s , rx: %s", path, file, fileMapping.name(), usingRxJava));
 
         this.file = file;
         this.path = path;
@@ -36,17 +37,15 @@ public class App {
         connection = new MqttBrokerClientConnector();
         csvc       = new CsvConverter(path, fileMapping);
 
-        scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection);
+        scheduler  = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileMapping);
     }
 
     public void run(){
         Stream<CityGisData> data = csvc.getData();
 
-        if(usingRxJava) {
-            scheduler.startPlayback(data);
-        }else{
-            scheduler.startPlayback(Observable.from(data::iterator));
-        }
+        Observable obs = scheduler.startPlayback(data);
+
+
     }
 
     public static void main(String[] args){

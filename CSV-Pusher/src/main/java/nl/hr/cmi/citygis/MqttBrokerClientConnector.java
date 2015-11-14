@@ -90,13 +90,12 @@ public class MqttBrokerClientConnector implements Publishable {
     public boolean publish(String topic, String message) {
         if(isConnectedToServer()) {
             try {
-                System.out.println("Publishing message: " + message);
-
+                LOGGER.debug("Publishing message: " + message);
                 MqttMessage Mqttmessage = new MqttMessage(message.getBytes());
                 Mqttmessage.setQos(qos);
 
                 mqttConnectedClient.publish(topic, Mqttmessage);
-                System.out.println("Message published");
+
                 return true;
             } catch (MqttException me) {
                 printException(me);

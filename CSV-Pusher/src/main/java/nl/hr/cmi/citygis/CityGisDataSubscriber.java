@@ -1,6 +1,7 @@
 package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.models.CityGisData;
+import nl.hr.cmi.citygis.models.FileMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Subscriber;
@@ -12,11 +13,14 @@ import java.time.LocalDateTime;
  */
 public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<CityGisData> {
 
-    PlaybackScheduler mps;
+    Publishable messageBroker;
+    FileMapping fileMapping;
+
     private final static Logger LOGGER = LoggerFactory.getLogger(CityGisDataSubscriber.class);
 
-    CityGisDataSubscriber(LocalDateTime schedulerTime, Publishable messageBroker) {
-        mps = new PlaybackScheduler(schedulerTime, messageBroker);
+    CityGisDataSubscriber(Publishable messageBroker, FileMapping fileMapping) {
+        this.messageBroker = messageBroker;
+        this.fileMapping = fileMapping;
     }
 
     @Override
@@ -27,7 +31,8 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
     @Override
     public void onNext(CityGisData cgd) {
         LOGGER.debug("onNext: " + cgd.toString());
-        mps.sendOrWait(cgd);
+
+        messageBroker.publish(fileMapping.name(), cgd.toJSON());
     }
 
     @Override

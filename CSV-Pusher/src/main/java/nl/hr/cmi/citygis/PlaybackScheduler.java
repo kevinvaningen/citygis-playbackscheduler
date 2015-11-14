@@ -4,13 +4,9 @@ import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.observables.ConnectableObservable;
 import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
@@ -81,28 +77,14 @@ public class PlaybackScheduler {
         PublishSubject<CityGisData> subject = PublishSubject.create();
         subject.subscribe(cs);
         data.forEach(cityGisData1 -> {
-//            if (cityGisData1){
-                    long waitTime = getWaitTimeForEntry(cityGisData1);
+            long waitTime = getWaitTimeForEntry(cityGisData1);
                 try {
                     LOGGER.debug("Waiting: " + waitTime);
-                    Thread.sleep(waitTime * 1000);
+                    Thread.sleep(Math.max(1, waitTime * 1000));
                 } catch (InterruptedException ie) {
                     LOGGER.error(ie.getMessage());
                 }
                 subject.onNext(cityGisData1);
-//            }
         });
-
-//        Observable<CityGisData> postelay =
-
     }
-//    private LocalDateTime getWeekdayAndTime(CityGisData cd){
-//        return cd.getDateTime().
-//    }
-
-    public void startPlayback(Observable<CityGisData> data) {
-        this.playeable = true; //TODO Is playable really needed?
-        data.subscribe(new CityGisDataSubscriber<>(messageBroker, fileMapping));
-    }
-
 }

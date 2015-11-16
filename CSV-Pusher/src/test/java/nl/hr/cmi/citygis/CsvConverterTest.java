@@ -23,6 +23,7 @@ public class CsvConverterTest extends TestCase {
         Assert.assertNotNull(data.findFirst().get());
     }
 
+
     public void testGetFileStartTime(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime expectedFileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter);

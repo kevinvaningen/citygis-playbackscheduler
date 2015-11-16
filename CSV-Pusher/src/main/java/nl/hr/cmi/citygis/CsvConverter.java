@@ -60,7 +60,6 @@ public class CsvConverter {
             breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
         }catch(IOException exception){
             LOGGER.error("Error occurred while trying to read the file: " + exception);
-            System.exit(0);
         }
 
         return breader.lines();

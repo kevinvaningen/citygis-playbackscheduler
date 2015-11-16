@@ -34,6 +34,7 @@ public class CsvConverter {
         file     = fileMapping.getFileName();
     }
 
+
     public Stream<CityGisData> getData() {
         Stream<String> lines = getLinesFromCsv();
         setData(getCityGisModelsFromLinesAsStream(lines));

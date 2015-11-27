@@ -14,7 +14,10 @@ public class CsvConverterTest extends TestCase {
         csvc = new CsvConverter(".", FileMapping.EVENTS);
     }
 
-  /*  public void testCsvFileRetrieval() throws Exception {
+    public void testThis() throws Exception {
+        assertTrue(true);
+    }
+    /*  public void testCsvFileRetrieval() throws Exception {
         Assert.assertTrue(csvc.getData().findFirst() != null);
     }
 

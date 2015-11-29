@@ -8,9 +8,6 @@ import rx.Subscriber;
 
 import java.time.LocalDateTime;
 
-/**
- * Created by youritjang on 11-11-15.
- */
 public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<CityGisData> {
 
     Publishable messageBroker;

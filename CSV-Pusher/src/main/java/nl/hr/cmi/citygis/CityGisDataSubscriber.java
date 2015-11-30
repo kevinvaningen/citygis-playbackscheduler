@@ -27,7 +27,7 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
 
     @Override
     public void onNext(CityGisData cgd) {
-        LOGGER.debug("onNext: " + cgd.toString());
+        LOGGER.debug("onNext: topic:" + fileMapping.name() +"--" +cgd.toString());
 
         messageBroker.publish(fileMapping.name(), cgd.toJSON());
     }

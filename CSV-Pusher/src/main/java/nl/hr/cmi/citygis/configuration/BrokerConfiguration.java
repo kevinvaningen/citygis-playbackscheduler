@@ -3,11 +3,11 @@ package nl.hr.cmi.citygis.configuration;
 import java.util.Optional;
 import java.util.Properties;
 
-/**
- * Created by cmi on 10-11-15.
+/***
+ * The BrokerConfiguration reader
  */
 public class BrokerConfiguration {
-    Properties props;
+    private Properties props;
 
     public BrokerConfiguration(Properties p){
         this.props = p;

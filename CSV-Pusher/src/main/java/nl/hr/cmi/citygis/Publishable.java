@@ -1,7 +1,7 @@
 package nl.hr.cmi.citygis;
 
-/**
- * Created by cmi on 09-11-15.
+/***
+ * Interface for broker-type connectors.
  */
 public interface Publishable {
 
@@ -12,17 +12,17 @@ public interface Publishable {
      * @param message a textual String that is publisheable to MQTT
      * @return returns the status of succesfull publication. True means the message is succesfully published.
      */
-    public boolean publish(String topic, String message);
+    boolean publish(String topic, String message);
 
     /**
      * Active disconnect
      */
-    public void disconnectFromBroker();
+    void disconnectFromBroker();
 
     /**
      * @return returns the connection status. True means an open socket connection.
      */
-    public boolean isConnectedToServer();
+    boolean isConnectedToServer();
 
-    public void connect();
+    void connect();
 }

@@ -2,9 +2,7 @@ package nl.hr.cmi.citygis.models;
 
 import java.util.List;
 
-/**
- * Created by cmi on 07-11-15.
- */
+
 public class Position extends CityGisPoint{
 
     private String rDx;

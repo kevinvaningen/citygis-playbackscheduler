@@ -4,8 +4,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-/**
- * Created by cmi on 01-12-15.
+/***
+ * Run the Unit Test suite.
  */
 public class UnitTestRunner {
     public static void main(String[] args) {

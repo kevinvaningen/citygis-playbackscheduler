@@ -1,13 +1,10 @@
 package nl.hr.cmi.citygis.models;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public abstract class CityGisPoint extends CityGisData {
-    public static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
     private LocalDateTime dateTime;
     private Long unitId;
 

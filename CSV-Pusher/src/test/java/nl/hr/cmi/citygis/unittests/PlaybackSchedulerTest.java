@@ -14,15 +14,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by cmi on 09-11-15.
- */
 public class PlaybackSchedulerTest {
     PlaybackScheduler scheduler;
 
     @Before
     public void setUp() throws Exception {
-        scheduler = new PlaybackScheduler(LocalDateTime.now(), new MockClientBroker(), FileMapping.MONITORING);
+        scheduler = new PlaybackScheduler(LocalDateTime.now(), new MockClientBroker(), FileMapping.MONITORING.name());
     }
 
     @org.junit.Test
@@ -33,7 +30,7 @@ public class PlaybackSchedulerTest {
 
     }
 
-    private List getTestDataWithDateTime(LocalDateTime d) {
+    private List<CityGisData> getTestDataWithDateTime(LocalDateTime d) {
         ArrayList<CityGisData> list = new ArrayList<CityGisData>();
 
         Monitoring m = new Monitoring();

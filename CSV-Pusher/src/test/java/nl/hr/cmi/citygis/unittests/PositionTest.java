@@ -7,9 +7,7 @@ import java.time.format.DateTimeParseException;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by cmi on 11-11-15.
- */
+
 public class PositionTest {
     @Test
     public void testPositionsStartDateUsingEmptyString() {
@@ -53,9 +51,7 @@ public class PositionTest {
         boolean catchedCorrectly = true;
         try{
             p.setDateTime("2015-03-10 07:12:25");
-        }catch(IllegalArgumentException e){
-            catchedCorrectly = false;
-        }catch(DateTimeParseException e){
+        } catch (IllegalArgumentException | DateTimeParseException e) {
             catchedCorrectly = false;
         }
         assertTrue(catchedCorrectly);

@@ -3,9 +3,7 @@ package nl.hr.cmi.citygis.mocks;
 import nl.hr.cmi.citygis.Publishable;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 
-/**
- * Created by cmi on 09-11-15.
- */
+
 public class MockClientBroker implements Publishable {
 
     public MockClientBroker() {

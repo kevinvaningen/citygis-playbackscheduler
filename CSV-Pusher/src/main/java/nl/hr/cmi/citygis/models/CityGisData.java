@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 public abstract class CityGisData implements iCityGisModel{
 
-    transient GsonBuilder gsonBuilder = new GsonBuilder();
-    transient  Gson gson;
+    private transient GsonBuilder gsonBuilder = new GsonBuilder();
+    private transient Gson gson;
 
 
     public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime> {
@@ -19,6 +19,11 @@ public abstract class CityGisData implements iCityGisModel{
         }
     }
 
+    /***
+     * Uses GSON to serialise the data object to JSON.
+     *
+     * @return a JSON version of the String.
+     */
     public String toJSON(){
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
         gson = gsonBuilder.create();

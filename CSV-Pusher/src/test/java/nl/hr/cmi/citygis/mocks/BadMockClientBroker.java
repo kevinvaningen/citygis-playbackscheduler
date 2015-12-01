@@ -2,8 +2,8 @@ package nl.hr.cmi.citygis.mocks;
 
 import nl.hr.cmi.citygis.Publishable;
 
-/**
- * Created by cmi on 12-11-15.
+/***
+ * Mocked broker which returns faults.
  */
 public class BadMockClientBroker implements Publishable {
     @Override

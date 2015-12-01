@@ -7,11 +7,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by cmi on 09-11-15.
- */
 public class CsvConverterTest {
-    CsvConverter csvc;
+    private CsvConverter csvc;
 
     @Before
     public void setUp() throws Exception {

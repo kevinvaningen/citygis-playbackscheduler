@@ -12,8 +12,8 @@ import rx.Subscriber;
  */
 public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<CityGisData> {
 
-    Publishable messageBroker;
-    String messageQueuetopic;
+    private Publishable messageBroker;
+    private String messageQueuetopic;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CityGisDataSubscriber.class);
 

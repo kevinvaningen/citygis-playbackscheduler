@@ -41,7 +41,7 @@ public class CsvConverter {
 
     /***
      * Main utility function of this class which provides a parsed stream of data-objects as a stream.
-     * @return
+     * @return return a stream of data.
      */
     public Stream<CityGisData> getCityGisDataFromFile() {
         Stream<String> lines = getLinesFromCsv();

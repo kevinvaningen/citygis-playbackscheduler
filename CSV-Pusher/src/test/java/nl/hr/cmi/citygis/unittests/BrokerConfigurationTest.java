@@ -8,8 +8,8 @@ import java.util.Properties;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by cmi on 15-11-15.
+/***
+ * Test class for brokers
  */
 public class BrokerConfigurationTest {
 

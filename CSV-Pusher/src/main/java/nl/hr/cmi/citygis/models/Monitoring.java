@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Created by youritjang on 09-11-15.
- */
+
 public class Monitoring extends CityGisData{
 
     private String unitId;

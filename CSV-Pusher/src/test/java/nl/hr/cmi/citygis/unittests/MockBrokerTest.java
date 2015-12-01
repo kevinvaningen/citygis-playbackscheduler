@@ -1,6 +1,5 @@
 package nl.hr.cmi.citygis.unittests;
 
-import junit.framework.Assert;
 import nl.hr.cmi.citygis.Publishable;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 import nl.hr.cmi.citygis.mocks.BadMockClientBroker;
@@ -10,6 +9,7 @@ import org.junit.Before;
 import java.util.Calendar;
 import java.util.Properties;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,8 +17,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class MockBrokerTest {
 
-    Publishable bc;
-    Calendar c;
+    private Publishable bc;
+    private Calendar c;
 
     @Before
     public void setUp() throws Exception {
@@ -30,7 +30,7 @@ public class MockBrokerTest {
     @org.junit.Test
     public void testConnection(){
         bc.connect();
-        Assert.assertTrue(bc.isConnectedToServer());
+        assertTrue(bc.isConnectedToServer());
         bc.disconnectFromBroker();
     }
 
@@ -38,14 +38,14 @@ public class MockBrokerTest {
     public void testBadBrokerage() throws Exception {
         Publishable badBroker = new BadMockClientBroker();
 
-        Assert.assertFalse(badBroker.publish("testTopic","Hi ALl!"));
+        assertFalse(badBroker.publish("testTopic", "Hi ALl!"));
     }
 
     @org.junit.Test
     public void testSendOneMessage(){
         bc.connect();
-        Assert.assertTrue(bc.isConnectedToServer());
-        Assert.assertTrue(bc.publish("postions","TestMessage" + c.getTime()));
+        assertTrue(bc.isConnectedToServer());
+        assertTrue(bc.publish("postions", "TestMessage" + c.getTime()));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

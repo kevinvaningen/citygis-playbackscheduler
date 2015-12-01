@@ -13,15 +13,14 @@ import java.util.stream.Stream;
  * CityGis CSV pusher's main entry point. Use it for setting the propper program arguments and initiating the playback scheduler.
  */
 public class App {
-    Publishable connection;
-    PlaybackScheduler scheduler;
-    CsvConverter csvc;
+    private Publishable connection;
+    private PlaybackScheduler scheduler;
+    private CsvConverter csvc;
 
-    String file;
-    String path;
-    FileMapping fileMapping;
-    boolean usingRxJava;
-    Stream<CityGisData> data;
+    private String file;
+    private String path;
+    private FileMapping fileMapping;
+    private Stream<CityGisData> data;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 
@@ -29,22 +28,20 @@ public class App {
      * @param fileName        use a full case sensitive filename.
      * @param filePath        use the path including final slash wich will be prefixed before the filename
      * @param fileTypeMapping use the Enumerated types in FileMapping
-     * @param useRxJava
      */
-    public App(String fileName, String filePath, FileMapping fileTypeMapping, boolean useRxJava) {
+    public App(String fileName, String filePath, FileMapping fileTypeMapping) {
         System.out.println("CSV pusher instantiated.");
         LOGGER.info("Started logging" + App.class.getSimpleName());
-        LOGGER.info(String.format("With parameter: path: %s , file: %s ,  filetype: %s , rx: %s", filePath, fileName, fileTypeMapping.name(), useRxJava));
+        LOGGER.info(String.format("With parameter: path: %s , file: %s ,  filetype: %s", filePath, fileName, fileTypeMapping.name()));
 
         this.file = fileName;
         this.path = filePath;
         this.fileMapping = fileTypeMapping;
-        this.usingRxJava = useRxJava;
 
         connection = new MqttBrokerClientConnector();
         csvc = new CsvConverter(filePath, fileTypeMapping);
 
-        scheduler = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileTypeMapping);
+        scheduler = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileTypeMapping.name());
         data = csvc.getCityGisDataFromFile();
     }
 
@@ -67,7 +64,7 @@ public class App {
         FileMapping fileMapping = FileMapping.valueOf(line.getOptionValue("type"));
         boolean usingRxJava     = line.hasOption("rx");
 
-        App a = new App(file, path, fileMapping, usingRxJava);
+        App a = new App(file, path, fileMapping);
         a.startScheduler();
     }
 }

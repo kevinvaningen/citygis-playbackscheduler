@@ -2,11 +2,8 @@ package nl.hr.cmi.citygis.configuration;
 
 import java.util.Properties;
 
-/**
- * Created by cmi on 10-11-15.
- */
-class CsvFileConfiguration {
-    Properties props;
+public class CsvFileConfiguration {
+    private Properties props;
     public String getEventsFileName(){
         return (String) props.get("CSVFILE_EVENTS");
     }

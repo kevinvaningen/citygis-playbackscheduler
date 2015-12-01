@@ -2,12 +2,10 @@ package nl.hr.cmi.citygis.models;
 
 import java.util.List;
 
-/**
- * Created by youritjang on 09-11-15.
- */
+
 public class Event extends CityGisPoint{
-    public Port port;
-    byte value;
+    private Port port;
+    private byte value;
 
     public Event create(List<String> data){
         return create(data.get(0), data.get(1), data.get(2), data.get(3));

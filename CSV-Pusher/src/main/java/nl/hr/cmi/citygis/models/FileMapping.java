@@ -2,9 +2,7 @@ package nl.hr.cmi.citygis.models;
 
 import java.util.function.Supplier;
 
-/**
- * Created by youritjang on 10-11-15.
- */
+
 public enum FileMapping {
     EVENTS("Events.csv", () -> new Event()),
     MONITORING("Monitoring.csv",() -> new Monitoring()),

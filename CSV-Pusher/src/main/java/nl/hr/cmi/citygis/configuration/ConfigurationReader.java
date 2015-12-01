@@ -8,12 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by cmi on 10-11-15.
- */
+
 public class ConfigurationReader {
-    Properties configurationProperties;
-    ConfigurationPropertyValues properties = new ConfigurationPropertyValues();
+    private Properties configurationProperties;
+    private ConfigurationPropertyValues properties = new ConfigurationPropertyValues();
 
 
     public ConfigurationReader() {
@@ -35,14 +33,12 @@ class ConfigurationPropertyValues {
 
     private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ConfigurationPropertyValues.class);
 
-    InputStream inputStream;
-    public static final String PROPERTY_FILE_FILE_NAME = "config.properties";
+    private InputStream inputStream;
+    private static final String PROPERTY_FILE_FILE_NAME = "config.properties";
 
     public Properties getPropValues() throws IOException {
         Properties prop = new Properties();
-
         try {
-
             inputStream = getClass().getClassLoader().getResourceAsStream(PROPERTY_FILE_FILE_NAME);
 
             if (inputStream != null) {
@@ -51,14 +47,12 @@ class ConfigurationPropertyValues {
                 throw new FileNotFoundException("property file '" + PROPERTY_FILE_FILE_NAME + "' not found in the classpath");
             }
 
-            return prop;
-
         } catch (Exception e) {
-            LOGGER.error("Exception: " + e);
+            LOGGER.error("Exception in loading config.properties.: " + e);
         } finally {
             inputStream.close();
-            return prop;
         }
+        return prop;
     }
     public Properties getDefaultProperties(){
         Properties prop = new Properties();

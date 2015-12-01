@@ -18,11 +18,11 @@ public class CsvConverterTest extends TestCase {
         assertTrue(true);
     }
     /*  public void testCsvFileRetrieval() throws Exception {
-        Assert.assertTrue(csvc.getData().findFirst() != null);
+        Assert.assertTrue(csvc.getCityGisDataFromFile().findFirst() != null);
     }
 
     public void testCsvDataCheckFirstDataElement() throws Exception {
-        Stream<CityGisData> data = csvc.getData();
+        Stream<CityGisData> data = csvc.getCityGisDataFromFile();
         Assert.assertNotNull(data.findFirst().get());
     }
 

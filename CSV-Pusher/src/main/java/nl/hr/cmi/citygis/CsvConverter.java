@@ -35,7 +35,7 @@ public class CsvConverter {
     }
 
 
-    public Stream<CityGisData> getData() {
+    public Stream<CityGisData> getCityGisDataFromFile() {
         Stream<String> lines = getLinesFromCsv();
         setData(getCityGisModelsFromLinesAsStream(lines));
         return data;
@@ -67,7 +67,7 @@ public class CsvConverter {
     }
 
     public LocalDateTime getFileStartTime(){
-        return getData()
+        return getCityGisDataFromFile()
                 .findFirst()
                 .get()
                 .getDateTime();

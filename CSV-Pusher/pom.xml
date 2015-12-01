@@ -163,7 +163,7 @@
                 <configuration>
                     <!--
                     Enables analysis which takes more memory but finds more bugs.
-                    If you run out of memory, changes the value of the effort element
+                    If you startScheduler out of memory, changes the value of the effort element
                     to 'Low'.
                     -->
                     <effort>Max</effort>

@@ -34,9 +34,9 @@ public class AppIntegrationTest extends TestCase {
             boolean isRunning = true;
 
             @Override
-            public void run() {
+            public void startScheduler() {
                 if (!isRunning) {
-                    //run it
+                    //startScheduler it
                 }
                 Date end = c.getTime();
                 if (end.getTime() - start.getTime() > 3000) {

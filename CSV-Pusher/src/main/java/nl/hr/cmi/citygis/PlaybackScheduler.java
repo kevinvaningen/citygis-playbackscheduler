@@ -100,7 +100,7 @@ public class PlaybackScheduler {
     public void startPlayback(Stream<CityGisData> data) {
         this.playeable = true; //TODO Is playable really needed?
 
-        CityGisDataSubscriber cs = new CityGisDataSubscriber(messageBroker, fileMapping);
+        CityGisDataSubscriber cs = new CityGisDataSubscriber(messageBroker, fileMapping.name());
         PublishSubject<CityGisData> subject = PublishSubject.create();
         subject.subscribe(cs);
 
@@ -108,9 +108,9 @@ public class PlaybackScheduler {
                 .skipWhile(cityGisData -> getWaitTimeForEntrySameDayandTime(cityGisData) >= 0)
                 .forEach(cityGisData1 -> {
                     long waitTime = getWaitTimeForEntrySameDayandTime(cityGisData1);
-                    if(waitTime >= 0) {
+                    if (waitTime >= 0) {
                         try {
-                            LOGGER.debug(String.format("Waiting: %f minutes. entry time: %s", waitTime/60.0, cityGisData1.getDateTime().toString()));
+                            LOGGER.debug(String.format("Waiting: %f minutes. entry time: %s", waitTime / 60.0, cityGisData1.getDateTime().toString()));
                             Thread.sleep(Math.max(1, waitTime * 1000));
                         } catch (InterruptedException ie) {
                             LOGGER.error(ie.getMessage());

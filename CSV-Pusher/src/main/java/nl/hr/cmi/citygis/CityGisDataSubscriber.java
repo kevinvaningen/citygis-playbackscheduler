@@ -34,7 +34,8 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
     @Override
     public void onCompleted() {
         LOGGER.info("Finished reading the data-file!");
-        System.exit(0);
+        //BUG
+        //System.exit(0);
     }
 
     @Override

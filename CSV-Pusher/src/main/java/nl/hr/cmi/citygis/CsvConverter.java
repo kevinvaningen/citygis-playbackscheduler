@@ -36,12 +36,11 @@ public class CsvConverter {
         this.path = path;
 
         supplier = fileMapping.getSupplier();
-        file     = fileMapping.getFileName();
+        file = fileMapping.getFileName();
     }
 
     /***
      * Main utility function of this class which provides a parsed stream of data-objects as a stream.
-     *
      * @return
      */
     public Stream<CityGisData> getCityGisDataFromFile() {
@@ -65,19 +64,19 @@ public class CsvConverter {
     private Stream<CityGisData> getCityGisModelsFromLinesAsStream(Stream<String> lines) {
         // skip the header of the CSV file
         return lines
-                    .skip(1)
-                    .map(line -> Arrays.asList(line.split(";")))
-                    .map(list -> supplier.get().create(list));
+                .skip(1)
+                .map(line -> Arrays.asList(line.split(";")))
+                .map(list -> supplier.get().create(list));
     }
 
     private Stream<String> getLinesFromCsv() {
         BufferedReader breader = null;
-        try{
+        try {
             Path path = Paths.get(this.path, this.file);
             LOGGER.info("Trying to read file: " + path.toAbsolutePath());
 
             breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
-        }catch(IOException exception){
+        } catch (IOException exception) {
             LOGGER.error("Error occurred while trying to read the file: " + exception);
         }
 

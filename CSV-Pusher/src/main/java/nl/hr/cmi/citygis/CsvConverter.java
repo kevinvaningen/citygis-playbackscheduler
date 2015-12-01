@@ -51,7 +51,6 @@ public class CsvConverter {
 
     /***
      * Find the first time occurence of the file. Usefull for scheduling purposes.
-     *
      * @return LocalDateTime off the first element in the file
      */
     public LocalDateTime getFileStartTime() {

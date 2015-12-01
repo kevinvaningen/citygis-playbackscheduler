@@ -38,13 +38,21 @@ public class CityGisDataSubscriber<E extends CityGisData> extends Subscriber<Cit
         //System.exit(0);
     }
 
+    /***
+     * onNext is called for each observed instance and is the main processing step. It publishes the data-frame.
+     *
+     * @param cityGisDataFrame accepts any CityGisData frame
+     */
     @Override
-    public void onNext(CityGisData cgd) {
-        LOGGER.debug("onNextObservable: topic/queue is:" + messageQueuetopic + "--" + cgd.toString());
-
-        messageBroker.publish(messageQueuetopic, cgd.toJSON());
+    public void onNext(CityGisData cityGisDataFrame) {
+        LOGGER.debug("onNextObservable: topic/queue is:" + messageQueuetopic + "--" + cityGisDataFrame.toString());
+        messageBroker.publish(messageQueuetopic, cityGisDataFrame.toJSON());
     }
 
+    /***
+     * When an error occurs, the software the observing (iterating) is not stopped.
+     * @param e the actual error that occured during watching. Difficult to specify, likely a publication error.
+     */
     @Override
     public void onError(Throwable e) {
         LOGGER.error("Error publishing or iterating the data in " + CityGisDataSubscriber.class.getSimpleName() + ":" + e + " on messageQueuetopic" + messageQueuetopic);

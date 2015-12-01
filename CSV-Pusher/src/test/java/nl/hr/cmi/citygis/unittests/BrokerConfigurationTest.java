@@ -1,25 +1,29 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.unittests;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
+import org.junit.Test;
 
 import java.util.Properties;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by cmi on 15-11-15.
  */
-public class BrokerConfigurationTest extends TestCase {
+public class BrokerConfigurationTest {
 
+    @Test
     public void testCredentialsCheckTest() throws Exception {
         BrokerConfiguration bc = new BrokerConfiguration(new Properties());
-        Assert.assertFalse(bc.usesCredentials());
+        assertFalse(bc.usesCredentials());
     }
 
+    @Test
     public void testCredentialsFilledInCheckTest() throws Exception {
         Properties p = new Properties();
         p.setProperty("MQTT_BROKER_PASSWORKD", "HOI");
         BrokerConfiguration bc = new BrokerConfiguration(p);
-        Assert.assertTrue(bc.usesCredentials());
+        assertTrue(bc.usesCredentials());
     }
 }

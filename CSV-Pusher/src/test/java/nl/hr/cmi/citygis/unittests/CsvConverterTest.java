@@ -1,22 +1,29 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.unittests;
 
-import junit.framework.TestCase;
+import nl.hr.cmi.citygis.CsvConverter;
 import nl.hr.cmi.citygis.models.FileMapping;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by cmi on 09-11-15.
  */
-public class CsvConverterTest extends TestCase {
+public class CsvConverterTest {
     CsvConverter csvc;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         csvc = new CsvConverter(".", FileMapping.EVENTS);
     }
 
+    @Test
     public void testThis() throws Exception {
         assertTrue(true);
     }
+
+
     /*  public void testCsvFileRetrieval() throws Exception {
         Assert.assertTrue(csvc.getCityGisDataFromFile().findFirst() != null);
     }

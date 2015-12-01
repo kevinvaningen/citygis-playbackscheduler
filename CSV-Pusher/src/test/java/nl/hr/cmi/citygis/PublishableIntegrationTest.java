@@ -46,12 +46,13 @@ public class PublishableIntegrationTest extends TestCase {
         bc.disconnectFromBroker();
     }
 
+    @org.junit.Test
     public void testSendOneMessage(){
         bc.connect();
         Assert.assertTrue(bc.isConnectedToServer());
         Assert.assertTrue(bc.publish("postions", "TestMessage" + c.getTime()));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

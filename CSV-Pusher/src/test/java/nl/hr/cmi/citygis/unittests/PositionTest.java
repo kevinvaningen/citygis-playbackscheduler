@@ -1,16 +1,17 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.unittests;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import nl.hr.cmi.citygis.models.Position;
+import org.junit.Test;
 
 import java.time.format.DateTimeParseException;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by cmi on 11-11-15.
  */
-public class PositionTest extends TestCase {
-
+public class PositionTest {
+    @Test
     public void testPositionsStartDateUsingEmptyString() {
         Position p = new Position();
         boolean catchedCorrectly = false;
@@ -19,8 +20,10 @@ public class PositionTest extends TestCase {
         }catch(IllegalArgumentException e){
             catchedCorrectly = true;
         }
-        Assert.assertTrue(catchedCorrectly);
+        assertTrue(catchedCorrectly);
     }
+
+    @Test
     public void testPositionsStartDateUsingNull()  {
         Position p = new Position();
         boolean catchedCorrectly = false;
@@ -29,8 +32,10 @@ public class PositionTest extends TestCase {
         }catch(IllegalArgumentException e){
             catchedCorrectly = true;
         }
-        Assert.assertTrue(catchedCorrectly);
+        assertTrue(catchedCorrectly);
     }
+
+    @Test
     public void testPositionsStartDateUsingBadFormat()  {
         Position p = new Position();
         boolean catchedCorrectly = false;
@@ -39,8 +44,10 @@ public class PositionTest extends TestCase {
         }catch(DateTimeParseException e){
             catchedCorrectly = true;
         }
-        Assert.assertTrue(catchedCorrectly);
+        assertTrue(catchedCorrectly);
     }
+
+    @Test
     public void testPositionsStartDateUsingProperFormat()  {
         Position p = new Position();
         boolean catchedCorrectly = true;
@@ -51,6 +58,6 @@ public class PositionTest extends TestCase {
         }catch(DateTimeParseException e){
             catchedCorrectly = false;
         }
-        Assert.assertTrue(catchedCorrectly);
+        assertTrue(catchedCorrectly);
     }
 }

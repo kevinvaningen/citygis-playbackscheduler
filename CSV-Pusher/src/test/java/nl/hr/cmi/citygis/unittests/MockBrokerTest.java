@@ -1,60 +1,47 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.unittests;
 
 import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import nl.hr.cmi.citygis.Publishable;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 import nl.hr.cmi.citygis.mocks.BadMockClientBroker;
 import nl.hr.cmi.citygis.mocks.MockClientBroker;
+import org.junit.Before;
 
 import java.util.Calendar;
 import java.util.Properties;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Unit test for simple App.
  */
-public class MockBrokerTest extends TestCase {
+public class MockBrokerTest {
 
     Publishable bc;
     Calendar c;
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public MockBrokerTest(String testName) {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-        return new TestSuite( MockBrokerTest.class );
-    }
-
+    @Before
     public void setUp() throws Exception {
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration(getTestProperties());
         bc = new MockClientBroker(brokerConfiguration);
         c = Calendar.getInstance();
-        super.setUp();
     }
 
-
+    @org.junit.Test
     public void testConnection(){
         bc.connect();
         Assert.assertTrue(bc.isConnectedToServer());
         bc.disconnectFromBroker();
     }
 
+    @org.junit.Test
     public void testBadBrokerage() throws Exception {
         Publishable badBroker = new BadMockClientBroker();
 
         Assert.assertFalse(badBroker.publish("testTopic","Hi ALl!"));
     }
 
+    @org.junit.Test
     public void testSendOneMessage(){
         bc.connect();
         Assert.assertTrue(bc.isConnectedToServer());
@@ -64,26 +51,23 @@ public class MockBrokerTest extends TestCase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        Assert.assertTrue(bc.isConnectedToServer());
-        Assert.assertTrue(true);
+        assertTrue(true);
 
         bc.disconnectFromBroker();
     }
 
+    @org.junit.Test
     public void testSendMultipleMessages(){
         bc.connect();
-        Assert.assertTrue(bc.isConnectedToServer());
-        Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
-        Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
-        Assert.assertTrue(bc.publish("topic/", "TestMessage0" + c.getTime()));
-        Assert.assertTrue(bc.publish("topic/","TestMessage0" + c.getTime()));
+        assertTrue(bc.isConnectedToServer());
+        assertTrue(bc.publish("topic/", "TestMessage0" + c.getTime()));
         try {
             Thread.sleep(10);
-            Assert.assertTrue(bc.isConnectedToServer());
+            assertTrue(bc.isConnectedToServer());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Assert.assertTrue(bc.isConnectedToServer());
+        assertTrue(bc.isConnectedToServer());
 
         bc.disconnectFromBroker();
     }

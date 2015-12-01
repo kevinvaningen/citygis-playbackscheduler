@@ -1,54 +1,39 @@
-package nl.hr.cmi.citygis;
+package nl.hr.cmi.citygis.unittests;
 
-import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import nl.hr.cmi.citygis.PlaybackScheduler;
 import nl.hr.cmi.citygis.mocks.MockClientBroker;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import nl.hr.cmi.citygis.models.Monitoring;
+import org.junit.Before;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by cmi on 09-11-15.
  */
-public class PlaybackSchedulerTest extends TestCase {
+public class PlaybackSchedulerTest {
     PlaybackScheduler scheduler;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         scheduler = new PlaybackScheduler(LocalDateTime.now(), new MockClientBroker(), FileMapping.MONITORING);
     }
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PlaybackSchedulerTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-        return new TestSuite(PlaybackSchedulerTest.class);
-    }
-
+    @org.junit.Test
     public void testScheduler() throws Exception {
         scheduler.startPlayback(getTestDataWithDateTime(LocalDateTime.now()).stream());
         //ASSERT I DIDNT DIE
-        Assert.assertTrue(true);
+        assertTrue(true);
 
     }
 
-    public List getTestDataWithDateTime(LocalDateTime d) {
+    private List getTestDataWithDateTime(LocalDateTime d) {
         ArrayList<CityGisData> list = new ArrayList<CityGisData>();
 
         Monitoring m = new Monitoring();

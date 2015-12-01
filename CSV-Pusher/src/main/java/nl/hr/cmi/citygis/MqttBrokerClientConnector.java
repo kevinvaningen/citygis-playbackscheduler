@@ -10,8 +10,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by cmi on 09-11-15.
+/***
+ * MqttBrokerClientConnector is an implemenation of Publishable. It connects to a MQTT broker using a socket connection.
  */
 public class MqttBrokerClientConnector implements Publishable {
     private MqttClient mqttConnectedClient;
@@ -23,16 +23,92 @@ public class MqttBrokerClientConnector implements Publishable {
     private final static Logger LOGGER = LoggerFactory.getLogger(MqttBrokerClientConnector.class);
 
 
+    /***
+     * Instantiate the broker connector using config.properties set configuration
+     */
     public MqttBrokerClientConnector() {
-        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + ", defaulting to config.properties configuration.");
+        LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + "without arguments, defaulting to config.properties file-based configuration.");
         ConfigurationReader configurationReader = new ConfigurationReader();
-        BrokerConfiguration brokerConfiguration = configurationReader.getBrokerConfiguration();
-        setConnectionProperties(brokerConfiguration);
+        //read and set file-based broker configuration
+        setConnectionProperties(configurationReader.getBrokerConfiguration());
     }
 
+    /***
+     * Instantiate the broker connector using overloaded arguments
+     *
+     * @param brokerConfiguration provide the configuration arguments of an MQTT compatible broker.
+     */
     public MqttBrokerClientConnector(BrokerConfiguration brokerConfiguration) {
         LOGGER.debug("Setting up " + MqttBrokerClientConnector.class.getSimpleName() + " using broker argument configuration.");
         setConnectionProperties(brokerConfiguration);
+    }
+
+    /***
+     * Create an active socket connection to the broker without sending data.
+     */
+    public void connect() {
+        try {
+            mqttConnectedClient = new MqttClient(broker, clientId, new MemoryPersistence());
+            mqttConnectedClient.connect(connectionOptions);
+            LOGGER.info("Connected to broker at:" + mqttConnectedClient.getServerURI());
+        } catch (MqttException me) {
+            LOGGER.error("Failed to connect to broker" + broker + " at " + mqttConnectedClient.getServerURI());
+            me.printStackTrace();
+        }
+    }
+
+    /***
+     * Helper method to diagnose connection status.
+     * @return true for a connected status
+     */
+    public boolean isConnectedToServer() {
+        if (mqttConnectedClient == null) {
+            return false;
+        }
+        return mqttConnectedClient.isConnected();
+    }
+
+    /***
+     * Actively close the connectino to the broger.
+     */
+    public void disconnectFromBroker() {
+        try {
+            mqttConnectedClient.disconnect();
+            LOGGER.debug("Broker disconnected from:");
+        } catch (NullPointerException n) {
+            LOGGER.debug("Broker didnt existed.");
+        } catch (MqttException me) {
+            logMqttException(me);
+            me.printStackTrace();
+        }
+    }
+
+    /***
+     * Checks for a connections (makes whan when not active) and pushes a message to the topic.
+     * @param topic   this is the mqtt channel where messages are published
+     * @param message a textual String that is publisheable to MQTT
+     * @return the status of the publication. True when not exceptions occured.
+     */
+    @Override
+    public boolean publish(String topic, String message) {
+        if (isConnectedToServer()) {
+            try {
+                LOGGER.debug("Publishing message: " + message);
+                MqttMessage Mqttmessage = new MqttMessage(message.getBytes());
+                Mqttmessage.setQos(qos);
+
+                mqttConnectedClient.publish(topic, Mqttmessage);
+
+                return true;
+            } catch (MqttException me) {
+                logMqttException(me);
+                return false;
+            }
+        } else {
+            connect();
+            publish(topic, message);
+        }
+        return false;
     }
 
     private void setConnectionProperties(BrokerConfiguration brokerConfiguration) {
@@ -46,61 +122,7 @@ public class MqttBrokerClientConnector implements Publishable {
         }
     }
 
-    public void connect() {
-        MemoryPersistence persistence = new MemoryPersistence();
-        try {
-            //TDOO create configuration file for message broker settings
-            mqttConnectedClient = new MqttClient(broker, clientId, persistence);
-            mqttConnectedClient.connect(connectionOptions);
-            LOGGER.info("Connected to broker at:" + mqttConnectedClient.getServerURI());
-        } catch (MqttException me) {
-            LOGGER.error("Failed to connect to broker" + broker + " at " + mqttConnectedClient.getServerURI());
-
-            printException(me);
-            me.printStackTrace();
-        }
-    }
-
-    public boolean isConnectedToServer() {
-        if (mqttConnectedClient == null) {
-            return false;
-        }
-        return mqttConnectedClient.isConnected();
-    }
-
-    public void disconnectFromBroker() {
-        try {
-            mqttConnectedClient.disconnect();
-            LOGGER.debug("Broker disconnected from:");
-        } catch (MqttException me) {
-            printException(me);
-            me.printStackTrace();
-        }
-    }
-
-    @Override
-    public boolean publish(String topic, String message) {
-        if (isConnectedToServer()) {
-            try {
-                LOGGER.debug("Publishing message: " + message);
-                MqttMessage Mqttmessage = new MqttMessage(message.getBytes());
-                Mqttmessage.setQos(qos);
-
-                mqttConnectedClient.publish(topic, Mqttmessage);
-
-                return true;
-            } catch (MqttException me) {
-                printException(me);
-                me.printStackTrace();
-            }
-        } else {
-            connect();
-            publish(topic, message);
-        }
-        return false;
-    }
-
-    private void printException(MqttException me) {
+    private void logMqttException(MqttException me) {
         LOGGER.error("reason " + me.getReasonCode() +
                 " msg " + me.getMessage() +
                 " loc " + me.getLocalizedMessage() +

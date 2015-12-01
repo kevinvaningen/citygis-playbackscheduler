@@ -4,9 +4,12 @@ import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rx.Observable;
 import rx.subjects.PublishSubject;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
@@ -59,6 +62,30 @@ public class PlaybackScheduler {
         return timeDifference;
     }
 
+    private long getWaitTimeForEntrySameDay(CityGisData entry) {
+        if(entry.getDateTime().getDayOfWeek().equals(LocalDate.now().getDayOfWeek())) {
+            LocalTime now   = LocalTime.now();
+            LocalTime entryTime = entry.getDateTime().toLocalTime();
+
+            return now.until(entryTime, ChronoUnit.SECONDS);
+        }else {
+            return -1L;
+        }
+    }
+
+    private long getWaitTimeForEntrySameDayandTime(CityGisData entry) {
+        boolean sameDay = entry.getDateTime().getDayOfWeek().equals(LocalDate.now().getDayOfWeek());
+
+        if(sameDay) {
+            LocalTime now   = LocalTime.now();
+            LocalTime entryTime = entry.getDateTime().toLocalTime();
+
+            return now.until(entryTime, ChronoUnit.SECONDS);
+        }else {
+            return -1L;
+        }
+    }
+
 
     public void stopPlayback(){
         this.playeable = false;
@@ -76,15 +103,20 @@ public class PlaybackScheduler {
         CityGisDataSubscriber cs = new CityGisDataSubscriber(messageBroker, fileMapping);
         PublishSubject<CityGisData> subject = PublishSubject.create();
         subject.subscribe(cs);
-        data.forEach(cityGisData1 -> {
-            long waitTime = getWaitTimeForEntry(cityGisData1);
-                try {
-                    LOGGER.debug("Waiting: " + waitTime);
-                    Thread.sleep(Math.max(1, waitTime * 1000));
-                } catch (InterruptedException ie) {
-                    LOGGER.error(ie.getMessage());
-                }
-                subject.onNext(cityGisData1);
-        });
+
+        Observable.from(data::iterator)
+                .skipWhile(cityGisData -> getWaitTimeForEntrySameDayandTime(cityGisData) >= 0)
+                .forEach(cityGisData1 -> {
+                    long waitTime = getWaitTimeForEntrySameDayandTime(cityGisData1);
+                    if(waitTime >= 0) {
+                        try {
+                            LOGGER.debug(String.format("Waiting: %f minutes. entry time: %s", waitTime/60.0, cityGisData1.getDateTime().toString()));
+                            Thread.sleep(Math.max(1, waitTime * 1000));
+                        } catch (InterruptedException ie) {
+                            LOGGER.error(ie.getMessage());
+                        }
+                        subject.onNext(cityGisData1);
+                    }
+                });
     }
 }

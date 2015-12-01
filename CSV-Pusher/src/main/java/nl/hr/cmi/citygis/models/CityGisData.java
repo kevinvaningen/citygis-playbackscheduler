@@ -1,15 +1,27 @@
 package nl.hr.cmi.citygis.models;
 
+import com.google.gson.*;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 
-/**
- * Created by youritjang on 09-11-15.
- */
+
 public abstract class CityGisData implements iCityGisModel{
-    transient Gson gson = new GsonBuilder().create();
+
+    transient GsonBuilder gsonBuilder = new GsonBuilder();
+    transient  Gson gson;
+
+
+    public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime> {
+        @Override
+        public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+            return new JsonPrimitive(localDateTime.toString());
+        }
+    }
+
     public String toJSON(){
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+        gson = gsonBuilder.create();
         return gson.toJson(this);
     }
 

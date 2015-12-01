@@ -15,7 +15,7 @@ public class MockClientBroker implements Publishable {
 
     @Override
     public boolean publish(String topic, String message) {
-        System.out.println("Mock succesfull event sended at: "+ topic + " Message is: "+message);
+        System.out.println("Mock succesfull event sent at: "+ topic + " Message is: "+message);
         return true;
     }
 

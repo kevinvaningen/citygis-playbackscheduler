@@ -44,7 +44,12 @@ public class CsvConverter {
      * @return return a stream of data.
      */
     public Stream<CityGisData> getCityGisDataFromFile() {
-        Stream<String> lines = getLinesFromCsv();
+        Stream<String> lines = null;
+        try {
+            lines = getLinesFromCsv();
+        } catch (IOException e) {
+            LOGGER.error("Error occurred while trying to read the file: " + e);
+        }
         setData(getCityGisModelsFromLinesAsStream(lines));
         return data;
     }
@@ -68,17 +73,12 @@ public class CsvConverter {
                 .map(list -> supplier.get().create(list));
     }
 
-    private Stream<String> getLinesFromCsv() {
+    private Stream<String> getLinesFromCsv() throws IOException {
         BufferedReader breader = null;
-        try {
-            Path path = Paths.get(this.path, this.file);
-            LOGGER.info("Trying to read file: " + path.toAbsolutePath());
+        Path path = Paths.get(this.path, this.file);
+        LOGGER.info("Trying to read file: " + path.toAbsolutePath());
 
-            breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
-        } catch (IOException exception) {
-            LOGGER.error("Error occurred while trying to read the file: " + exception);
-        }
-
+        breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
         return breader.lines();
     }
 

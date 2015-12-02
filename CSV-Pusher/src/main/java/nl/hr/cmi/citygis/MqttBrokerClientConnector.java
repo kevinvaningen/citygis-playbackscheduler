@@ -10,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+
 /***
  * MqttBrokerClientConnector is an implemenation of Publishable. It connects to a MQTT broker using a socket connection.
  */
@@ -94,7 +96,7 @@ public class MqttBrokerClientConnector implements Publishable {
         if (isConnectedToServer()) {
             try {
                 LOGGER.debug("Publishing message: " + message);
-                MqttMessage Mqttmessage = new MqttMessage(message.getBytes());
+                MqttMessage Mqttmessage = new MqttMessage(message.getBytes("UTF8"));
                 Mqttmessage.setQos(qos);
 
                 mqttConnectedClient.publish(topic, Mqttmessage);
@@ -102,6 +104,9 @@ public class MqttBrokerClientConnector implements Publishable {
                 return true;
             } catch (MqttException me) {
                 logMqttException(me);
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("Unsupported UTF8 encoding exception.");
                 return false;
             }
         } else {

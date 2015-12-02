@@ -29,13 +29,12 @@ public class PublishableIntegrationTest {
         bc.disconnectFromBroker();
     }
 
-    @org.junit.Test
     public void testSendOneMessage(){
         bc.connect();
         assertTrue(bc.isConnectedToServer());
         assertTrue(bc.publish("postions", "TestMessage" + LocalDateTime.now()));
         try {
-            Thread.sleep(200);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

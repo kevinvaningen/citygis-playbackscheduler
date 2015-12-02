@@ -18,25 +18,22 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /***
- * CsvConverter class for reading inputs based on file arguments and returns the String representation of a line using a Stream.
+ * CsvConverter class for reading inputs based on fileAndPath arguments and returns the String representation of a line using a Stream.
  */
 public class CsvConverter {
-    private String path = "";
-    private String file;
+    private String fileAndPath = "";
     private Stream<CityGisData> data;
     private Supplier<iCityGisModel> supplier;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CsvConverter.class);
 
     /***
-     * @param path        provide a file Path, and with a trailing '/' if necessary
+     * @param fileAndPath provide a fileAndPath Path and filename
      * @param fileMapping provide a FileMapping enum which contains filename and type for parsing purposes.
      */
-    public CsvConverter(String path, FileMapping fileMapping) {
-        this.path = path;
-
+    public CsvConverter(String fileAndPath, FileMapping fileMapping) {
+        this.fileAndPath = fileAndPath;
         supplier = fileMapping.getSupplier();
-        file = fileMapping.getFileName();
     }
 
     /***
@@ -48,15 +45,15 @@ public class CsvConverter {
         try {
             lines = getLinesFromCsv();
         } catch (IOException e) {
-            LOGGER.error("Error occurred while trying to read the file: " + e);
+            LOGGER.error("Error occurred while trying to read the fileAndPath: " + e);
         }
         setData(getCityGisModelsFromLinesAsStream(lines));
         return data;
     }
 
     /***
-     * Find the first time occurence of the file. Usefull for scheduling purposes.
-     * @return LocalDateTime off the first element in the file
+     * Find the first time occurence of the fileAndPath. Usefull for scheduling purposes.
+     * @return LocalDateTime off the first element in the fileAndPath
      */
     public LocalDateTime getFileStartTime() {
         return getCityGisDataFromFile()
@@ -66,7 +63,7 @@ public class CsvConverter {
     }
 
     private Stream<CityGisData> getCityGisModelsFromLinesAsStream(Stream<String> lines) {
-        // skip the header of the CSV file
+        // skip the header of the CSV fileAndPath
         return lines
                 .skip(1)
                 .map(line -> Arrays.asList(line.split(";")))
@@ -74,12 +71,12 @@ public class CsvConverter {
     }
 
     private Stream<String> getLinesFromCsv() throws IOException {
-        BufferedReader breader = null;
-        Path path = Paths.get(this.path, this.file);
-        LOGGER.info("Trying to read file: " + path.toAbsolutePath());
+        BufferedReader bReader = null;
+        Path path = Paths.get(this.fileAndPath);
+        LOGGER.info("Trying to read fileAndPath: " + path.toAbsolutePath());
 
-        breader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
-        return breader.lines();
+        bReader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+        return bReader.lines();
     }
 
     private void setData(Stream<CityGisData> data) {

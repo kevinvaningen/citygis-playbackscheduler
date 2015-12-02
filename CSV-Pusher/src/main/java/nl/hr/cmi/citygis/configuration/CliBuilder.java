@@ -30,14 +30,12 @@ public class CliBuilder {
 
 
     private static Options createOptions(){
-        Option ofile = Option.builder("f").argName("file").longOpt("file").required().hasArg().desc("The csv data file name").build();
-        Option opath = Option.builder("p").argName("path").longOpt("path").hasArg().desc("The path, default is the source root.").build();
-        Option otype = Option.builder("t").argName("type").longOpt("type").required().hasArg().desc("Here you can set the file type <CONNECTIONS || EVENTS || MONITORING || POSITIONS>.").build();
+        Option oFile = Option.builder("f").argName("file").longOpt("file").hasArg().desc("The file (including path), default path is the source root.").build();
+        Option oType = Option.builder("t").argName("type").longOpt("type").required().hasArg().desc("Here you can set the file type <CONNECTIONS || EVENTS || MONITORING || POSITIONS>.").build();
 
         Options options = new Options();
-        options.addOption(ofile);
-        options.addOption(opath);
-        options.addOption(otype);
+        options.addOption(oFile);
+        options.addOption(oType);
 
         return options;
     }

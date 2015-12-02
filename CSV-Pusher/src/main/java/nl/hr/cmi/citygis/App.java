@@ -17,29 +17,26 @@ public class App {
     private PlaybackScheduler scheduler;
     private CsvConverter csvc;
 
-    private String file;
-    private String path;
+    private String fileAndPath;
     private FileMapping fileMapping;
     private Stream<CityGisData> data;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     /***
-     * @param fileName        use a full case sensitive filename.
-     * @param filePath        use the path including final slash wich will be prefixed before the filename
+     * @param fileAndPathName        use a full case sensitive filename.
      * @param fileTypeMapping use the Enumerated types in FileMapping
      */
-    public App(String fileName, String filePath, FileMapping fileTypeMapping) {
+    public App(String fileAndPathName, FileMapping fileTypeMapping) {
         System.out.println("CSV pusher instantiated.");
         LOGGER.info("Started logging" + App.class.getSimpleName());
-        LOGGER.info(String.format("With parameter: path: %s , file: %s ,  filetype: %s", filePath, fileName, fileTypeMapping.name()));
+        LOGGER.info(String.format("With parameter: fileAndPath: %s , fileType: %s", fileAndPathName, fileTypeMapping.name()));
 
-        this.file = fileName;
-        this.path = filePath;
+        this.fileAndPath = fileAndPathName;
         this.fileMapping = fileTypeMapping;
 
         connection = new MqttBrokerClientConnector();
-        csvc = new CsvConverter(filePath, fileTypeMapping);
+        csvc = new CsvConverter(fileAndPath, fileTypeMapping);
 
         scheduler = new PlaybackScheduler(csvc.getFileStartTime(), connection, fileTypeMapping.name());
         data = csvc.getCityGisDataFromFile();
@@ -59,12 +56,10 @@ public class App {
     public static void main(String[] args){
         CommandLine line = CliBuilder.parse(args);
 
-        String file             = line.getOptionValue("file");
-        String path             = line.getOptionValue("path");
+        String fileAndPath = line.getOptionValue("file");
         FileMapping fileMapping = FileMapping.valueOf(line.getOptionValue("type"));
-        boolean usingRxJava     = line.hasOption("rx");
 
-        App a = new App(file, path, fileMapping);
+        App a = new App(fileAndPath, fileMapping);
         a.startScheduler();
     }
 }

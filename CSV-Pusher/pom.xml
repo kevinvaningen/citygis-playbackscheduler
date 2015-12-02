@@ -186,6 +186,9 @@
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>6</threadCount>
+                    <!--<includes>-->
+                    <!--<include></include>-->
+                    <!--</includes>-->
                 </configuration>
             </plugin>
         </plugins>

@@ -1,6 +1,5 @@
-package nl.hr.cmi.citygis.unittests;
+package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.Publishable;
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 import nl.hr.cmi.citygis.mocks.BadMockClientBroker;
 import nl.hr.cmi.citygis.mocks.MockClientBroker;
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Unit test for simple App.
  */
-public class MockBrokerTest {
+public class MockBrokerUnitTest {
 
     private Publishable bc;
     private Calendar c;

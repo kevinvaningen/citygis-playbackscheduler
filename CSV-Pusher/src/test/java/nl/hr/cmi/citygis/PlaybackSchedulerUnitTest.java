@@ -1,6 +1,5 @@
-package nl.hr.cmi.citygis.unittests;
+package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.PlaybackScheduler;
 import nl.hr.cmi.citygis.mocks.MockClientBroker;
 import nl.hr.cmi.citygis.models.CityGisData;
 import nl.hr.cmi.citygis.models.FileMapping;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class PlaybackSchedulerTest {
+public class PlaybackSchedulerUnitTest {
     PlaybackScheduler scheduler;
 
     @Before

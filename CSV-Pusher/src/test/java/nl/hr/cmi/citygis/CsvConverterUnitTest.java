@@ -1,13 +1,12 @@
-package nl.hr.cmi.citygis.unittests;
+package nl.hr.cmi.citygis;
 
-import nl.hr.cmi.citygis.CsvConverter;
 import nl.hr.cmi.citygis.models.FileMapping;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class CsvConverterTest {
+public class CsvConverterUnitTest {
     private CsvConverter csvc;
 
     @Before

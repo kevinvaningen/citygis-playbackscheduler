@@ -1,4 +1,4 @@
-package nl.hr.cmi.citygis.unittests;
+package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.models.Position;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 import static org.junit.Assert.assertTrue;
 
 
-public class PositionTest {
+public class PositionUnitTest {
     @Test
     public void testPositionsStartDateUsingEmptyString() {
         Position p = new Position();

@@ -25,6 +25,7 @@ public class PublishableIntegrationTest {
     @org.junit.Test
     public void testConnection(){
         bc.connect();
+
         assertTrue(bc.isConnectedToServer());
         bc.disconnectFromBroker();
     }

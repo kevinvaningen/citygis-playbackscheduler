@@ -1,4 +1,4 @@
-package nl.hr.cmi.citygis.unittests;
+package nl.hr.cmi.citygis;
 
 import nl.hr.cmi.citygis.configuration.BrokerConfiguration;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 /***
  * Test class for brokers
  */
-public class BrokerConfigurationTest {
+public class BrokerConfigurationUnitTest {
 
     @Test
     public void testCredentialsCheckTest() throws Exception {

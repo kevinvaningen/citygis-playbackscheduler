@@ -1,5 +1,7 @@
 # Citygis-Player
-This is a csv-event scheduled playback MQTT-client. It is used for testing purposes. It playbacks a CSV file with timed events and publishes the events to the Mosquitto message broker. The MQTT broker receives messages in JSON serialised format using QoS=0. 
+This is a csv-event scheduled playback MQTT-client. It is used for testing purposes. It playbacks a CSV file with (reactive programming) timed events and publishes the events to the Mosquitto message broker. The MQTT broker receives messages in JSON serialised format using QoS=0. 
+
+
 
 #Install Mosquitto using Docker
 ##Get Docker 

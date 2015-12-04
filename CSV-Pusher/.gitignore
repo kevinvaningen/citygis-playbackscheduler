@@ -20,13 +20,6 @@
 # .idea/dynamic.xml
 # .idea/uiDesigner.xml
 
-# Gradle:
-# .idea/gradle.xml
-# .idea/libraries
-
-# Mongo Explorer plugin:
-# .idea/mongoSettings.xml
-
 ## File-based project format:
 *.ipr
 *.iws
@@ -36,12 +29,6 @@
 # IntelliJ
 out/
 target/
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
@@ -61,6 +48,35 @@ crashlytics-build.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-
 #log
 LOG-CityGis-PUSHER.out
+*.out
+*.out*
+
+### Maven template
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+
+### Java template
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+#CSV
+Events.csv
+Monitoring.csv
+Positions.csv
+Connections.csv
+

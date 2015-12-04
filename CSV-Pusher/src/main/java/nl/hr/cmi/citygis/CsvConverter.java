@@ -62,7 +62,6 @@ public class CsvConverter {
                 .getDateTime();
     }
 
-
     private Stream<CityGisData> getCityGisModelsFromLinesAsStream(Stream<String> lines) {
         // skip the header of the CSV fileAndPath
         return lines

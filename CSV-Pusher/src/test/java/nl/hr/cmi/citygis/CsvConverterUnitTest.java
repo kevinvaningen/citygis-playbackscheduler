@@ -32,7 +32,7 @@ public class CsvConverterUnitTest {
 
     public void testGetFileStartTime(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime expectedFileStartTime = LocalDateTime.parse("2015-03-10 07:12:25", formatter);
+        LocalDateTime expectedFileStartTime = LocalDateTime.parseCommandLineArguments("2015-03-10 07:12:25", formatter);
         LocalDateTime providedFileStartTime = csvc.getFileStartTime();
         assertEquals(expectedFileStartTime, providedFileStartTime);
     }

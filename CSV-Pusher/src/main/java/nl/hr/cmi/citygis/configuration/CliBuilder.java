@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 public class CliBuilder {
     private final static Logger LOGGER = LoggerFactory.getLogger(CliBuilder.class);
 
-
-    public static CommandLine parse(String[] args){
+    public static CommandLine parseCommandLineArguments(String[] args) {
         Options options = createOptions();
         showHelpMessage(args, options);
 
@@ -21,7 +20,7 @@ public class CliBuilder {
         try {
             line = parser.parse(options, args);
         } catch (ParseException ex) {
-            LOGGER.error("Parsing failed.  Reason: " + ex.getMessage());
+            LOGGER.error("Parsing command line arguments failed.  Reason: " + ex.getMessage());
             System.exit(1);
         }
 
@@ -30,12 +29,22 @@ public class CliBuilder {
 
 
     private static Options createOptions(){
-        Option oFile = Option.builder("f").argName("file").longOpt("file").hasArg().desc("The file (including path), default path is the source root.").build();
+        Option oFile = Option.builder("f").argName("file").longOpt("file").required().hasArg().desc("The file (including path).").build();
         Option oType = Option.builder("t").argName("type").longOpt("type").required().hasArg().desc("Here you can set the file type <CONNECTIONS || EVENTS || MONITORING || POSITIONS>.").build();
+        Option oMqttHostname = Option.builder("h").argName("host").longOpt("host").hasArg().desc("Here you can set the URI (including port) for the message broker.").build();
+        Option oMqttUsername = Option.builder("u").argName("username").longOpt("username").hasArg().desc("Here you can set the user for the message broker.").build();
+        Option oMqttPassword = Option.builder("p").argName("password").longOpt("password").hasArg().desc("Here you can set the password for the message broker.").build();
+        Option oMqttClientId = Option.builder("c").argName("clientid").longOpt("clientid").hasArg().desc("Here you can set the clientid for the message broker.").build();
+        Option oMqttQos = Option.builder("q").argName("qos").longOpt("qos").hasArg().desc("Here you can set the qos for the message broker.").build();
 
         Options options = new Options();
         options.addOption(oFile);
         options.addOption(oType);
+        options.addOption(oMqttHostname);
+        options.addOption(oMqttUsername);
+        options.addOption(oMqttPassword);
+        options.addOption(oMqttClientId);
+        options.addOption(oMqttQos);
 
         return options;
     }
@@ -48,7 +57,7 @@ public class CliBuilder {
             CommandLine helpLine = new DefaultParser().parse(helpOptions, args, true);
             if (helpLine.hasOption("help") || args.length == 0) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("App -file Connections.csv -type CONNECTIONS", options);
+                formatter.printHelp("Applicationfilename.jar -f /path/filename.csv -t CONNECTIONS", options);
                 System.exit(0);
             }
         } catch (ParseException ex) {

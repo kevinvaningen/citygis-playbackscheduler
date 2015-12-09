@@ -57,7 +57,7 @@ public class CliBuilder {
             CommandLine helpLine = new DefaultParser().parse(helpOptions, args, true);
             if (helpLine.hasOption("help") || args.length == 0) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("Applicationfilename.jar -f /path/filename.csv -t CONNECTIONS", options);
+                formatter.printHelp("java -jar Applicationfilename.jar -f /path/filename.csv -t CONNECTIONS", options);
                 System.exit(0);
             }
         } catch (ParseException ex) {

@@ -1,6 +1,7 @@
 package nl.hr.cmi.citygis.configuration;
 
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
@@ -10,34 +11,34 @@ import java.util.Properties;
 
 
 public class ConfigurationReader {
+    private final static ConfigurationPropertyValues properties = new ConfigurationPropertyValues();
+    private final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationReader.class);
+
     public BrokerConfiguration getBrokerConfiguration() {
-        return new BrokerConfiguration(tryReadingSystemProperties());
+        LOGGER.debug("Returning system configuration for broker.");
+        try {
+            return new BrokerConfiguration(tryReadingSystemProperties());
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGGER.error("Error reading property file. Exiting software " + e.toString());
+            throw new RuntimeException(e);
+        }
     }
 
     public BrokerConfiguration getCommandlineBrokerConfiguration(String host, String user, String pass, String clientId, String qos) {
+        LOGGER.debug("Returning argument based configuration for broker.");
         return new BrokerConfiguration(ConfigurationPropertyValues.createProperties(host, user, pass, clientId, qos));
     }
 
-
-    private Properties tryReadingSystemProperties() {
-        ConfigurationPropertyValues properties = new ConfigurationPropertyValues();
-
-        Properties configurationProperties;
-
-        try {
-            configurationProperties = properties.getDefaultPropertyFileValues();
-        } catch (IOException e) {
-            e.printStackTrace();
-            configurationProperties = properties.getDefaultProperties();
-        }
-        return configurationProperties;
+    private Properties tryReadingSystemProperties() throws IOException {
+        return properties.getDefaultPropertyFileValues();
     }
 }
 
 
 class ConfigurationPropertyValues {
 
-    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ConfigurationPropertyValues.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationPropertyValues.class);
 
     private InputStream inputStream;
     private static final String PROPERTY_FILE_FILE_NAME = "config.properties";

@@ -78,6 +78,7 @@ public class App {
             BrokerConfiguration brokerConfiguration = configurationReader.getCommandlineBrokerConfiguration(hostName, userName, password, clientId, qos);
             application = new App(fileAndPath, fileMapping, new MqttBrokerClientConnector(brokerConfiguration));
         } else {
+            //this option defaults to configuration using config.properties.
             application = new App(fileAndPath, fileMapping);
         }
         application.startScheduler();

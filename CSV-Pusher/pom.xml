@@ -43,7 +43,7 @@
             <version>1.0.15</version>
         </dependency>
 
-        <!--JMS support-->
+        <!--MQTT support-->
         <dependency>
             <groupId>org.eclipse.paho</groupId>
             <artifactId>mqtt-client</artifactId>

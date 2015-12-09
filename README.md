@@ -17,6 +17,10 @@ This is a csv-event scheduled playback MQTT-client. It is used for testing purpo
     #Use the following command java -jar pusher-1.0-SNAPSHOT-jar-with-dependencies -f <fullFilePath> -t <FILE-TYPE>
     #Example:
     java -jar pusher-1.0-SNAPSHOT-jar-with-dependencies -f /home/my-user/Positions.csv -t POSITIONS
+    #Example with broker config to localhost
+    java -jar pusher-1.0-SNAPSHOT-jar-with-dependencies -f /home/my-user/Positions.csv -t POSITIONS -h tcp://127.0.0.1:8883 -c csv -q 0
+    #Example with broker config on server with authentication
+    java -jar pusher-1.0-SNAPSHOT-jar-with-dependencies -f /home/my-user/Positions.csv -t POSITIONS -h tcp://127.0.0.1:8883 -c csv -q 0 -u mqttuser -p pass
 
 #Watch the message broker messages
 Use an MQTT protocol compatible tool (i like Mqtt.Fx on osx).  http://www.hivemq.com/blog/seven-best-mqtt-client-tools

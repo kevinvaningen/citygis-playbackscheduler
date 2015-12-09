@@ -4,6 +4,8 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
 /**
  * Hello world!
  */
@@ -32,10 +34,13 @@ public class ApplicationReceiver implements MqttCallback {
             client = new MqttClient(url, clientId);
             client.connect(createConnectionProperties(user, pass));
             client.setCallback(this);
-            //Arrays.stream(topics).forEach();map()
-            for (int i = 0; i < topics.length; i++) {
-                client.subscribe(topics[i]);
-            }
+            Arrays.stream(topics).forEach(t -> {
+                try {
+                    client.subscribe(t);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            });
 
 
         } catch (MqttException e) {
